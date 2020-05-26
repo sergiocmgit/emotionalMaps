@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F6F6F6"
+        tools:context=".MainActivity">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F6F6F6"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/editRango"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/rango"
+                    android:textAlignment="center"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/hinit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="20sp"
+                    android:text="@string/horainit"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/background_light"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/horainithint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:editable="false"
+                    android:hint="@string/horainithint"
+                    android:onClick="funHinit"
+                    android:paddingLeft="25sp"
+                    android:paddingBottom="15sp"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/hfin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="20sp"
+                    android:text="@string/horafin"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/background_light"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/horafinhint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:editable="false"
+                    android:hint="@string/horainithint"
+                    android:onClick="funHend"
+                    android:paddingLeft="25sp"
+                    android:paddingBottom="15sp"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/dias"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="20sp"
+                    android:text="@string/dias"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="286dp"
+                android:layout_height="59dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ToggleButton
+                    android:id="@+id/tL"
+                    style="@style/toggleButton"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:background="@drawable/toggle_bg"
+                    android:textOff="L"
+                    android:textOn="L"
+                    android:textStyle="bold"/>
+
+                <ToggleButton
+                    android:id="@+id/tM"
+                    style="@style/toggleButton"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:background="@drawable/toggle_bg"
+                    android:textOff="M"
+                    android:textOn="M"
+                    android:textStyle="bold"/>
+
+                <ToggleButton
+                    android:id="@+id/tMi"
+                    style="@style/toggleButton"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:background="@drawable/toggle_bg"
+                    android:textOff="M"
+                    android:textOn="M"
+                    android:textStyle="bold"/>
+
+                <ToggleButton
+                    android:id="@+id/tJ"
+                    style="@style/toggleButton"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:background="@drawable/toggle_bg"
+                    android:textOff="J"
+                    android:textOn="J"
+                    android:textStyle="bold"/>
+
+                <ToggleButton
+                    android:id="@+id/tV"
+                    style="@style/toggleButton"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:background="@drawable/toggle_bg"
+                    android:textOff="V"
+                    android:textOn="V"
+                    android:textStyle="bold"/>
+
+                <ToggleButton
+                    android:id="@+id/tS"
+                    style="@style/toggleButton"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:background="@drawable/toggle_bg"
+                    android:textOff="S"
+                    android:textOn="S"
+                    android:textStyle="bold"/>
+
+                <ToggleButton
+                    android:id="@+id/tD"
+                    style="@style/toggleButton"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:background="@drawable/toggle_bg"
+                    android:textOff="D"
+                    android:textOn="D"
+                    android:textStyle="bold"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/anadir"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="1"
+                    android:text="@string/rangohint" />
+
+                <Button
+                    android:id="@+id/cancelAnadir"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="@string/cancelar"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
+
+
+
+

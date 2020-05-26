@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity"
+        >
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.336"
+            app:srcCompat="@drawable/logo" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="409dp"
+            android:layout_height="570dp"
+            android:background="#F6F6F6"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/hola"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/saludo"
+                    android:textAlignment="center"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="104dp"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
+
+                <TextView
+                    android:id="@+id/smsinit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="111dp"
+                    android:layout_weight="1"
+                    android:text="@string/smsinit"
+                    android:textAlignment="center"
+                    android:textSize="21sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/fechanac"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="20dp"
+                    android:text="@string/fechanac"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/background_light"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/fechanachint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:editable="false"
+                    android:hint="@string/fechanachint"
+                    android:onClick="funDate"
+                    android:paddingLeft="25sp"
+                    android:paddingBottom="15sp"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/sexo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="20dp"
+                    android:text="@string/sexo"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="@string/sexo" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/background_light"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/sexohint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:editable="false"
+                    android:hint="@string/sexohint"
+                    android:onClick="funSex"
+                    android:paddingLeft="25sp"
+                    android:paddingBottom="15sp"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tipo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="20dp"
+                    android:text="@string/tipo"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="@string/tipo" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/background_light"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tipohint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:editable="true"
+                    android:hint="@string/tipohint"
+                    android:onClick="funType"
+                    android:paddingLeft="25sp"
+                    android:paddingBottom="15sp"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/minutos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="20dp"
+                    android:text="@string/minutos"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="@string/minutos" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/background_light"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/minutoshint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="@android:color/transparent"
+                    android:hint="@string/minutoshint"
+                    android:inputType="number"
+                    android:paddingLeft="25sp"
+                    android:paddingTop="2sp"
+                    android:paddingBottom="10sp"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/rango"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="20dp"
+                    android:text="@string/rango"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="@string/rango" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/background_light"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/rangohint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:editable="false"
+                    android:hint="@string/rangohint"
+                    android:onClick="funRank"
+                    android:paddingLeft="25sp"
+                    android:paddingBottom="15sp"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

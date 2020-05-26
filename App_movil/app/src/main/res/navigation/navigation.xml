@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation.xml"
+    app:startDestination="@id/profile">
+    <fragment
+        android:id="@+id/profile"
+        android:name="com.example.myapplication.geoemo.Profile"
+        android:label="Profile"
+        android:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profile_to_rank"
+            app:destination="@id/rank"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/rank"
+        android:name="com.example.myapplication.geoemo.Rank"
+        android:label="Rank"
+        android:layout="@layout/fragment_rank">
+        <action
+            android:id="@+id/action_rank_to_profile"
+            app:destination="@id/profile" />
+    </fragment>
+</navigation>

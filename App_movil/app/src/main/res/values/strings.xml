@@ -1,0 +1,31 @@
+<resources>
+    <string name="saludo">¡Hola!</string>
+    <string name="smsinit">Necesitamos que introduzcas los siguientes datos antes de empezar a valorar tu entorno:</string>
+    <string name="fechanac">Fecha de nacimiento</string>
+    <string name="fechanachint">Añadir fecha</string>
+    <string name="sexo">Sexo</string>
+    <string name="sexohint">Seleccionar sexo</string>
+    <string name="tipo">Tipo</string>
+    <string name="tipohint">Seleccionar tipo de perfil</string>
+    <string name="minutos">Minutos entre notificaciones</string>
+    <string name="minutoshint">Añadir minutos entre notificaciones</string>
+    <string name="rango">Rango de tiempo</string>
+    <string name="rangohint">Añadir rango de tiempo</string>
+    <string-array name="sexSelect">
+        <item>Hombre</item>
+        <item>Mujer</item>
+        <item>Otros</item>
+    </string-array>
+    <string name="horainit">Hora de inicio</string>
+    <string name="horafin">Hora de fin</string>
+    <string name="dias">Días a los que afecta el rango</string>
+    <string name="horainithint">Añadir hora de inicio</string>
+    <string name="horafinhint">Añadir hora de fin</string>
+    <string name="cleared_message">borrar</string>
+    <string name="cancelar">Cancelar</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>
