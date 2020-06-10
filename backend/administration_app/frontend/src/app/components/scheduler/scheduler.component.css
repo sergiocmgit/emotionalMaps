@@ -1,0 +1,12 @@
+
+#delete, #notReachable {
+	color: red;
+}
+
+#reachable {
+	color: green;
+}
+
+#refreshGrey {
+	color: rgb(221, 221, 221);
+}

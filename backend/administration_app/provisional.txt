@@ -1,0 +1,4 @@
+-3.02, -3.0, 41.98, 42.0
+27 ways
+1844 nodes
+Total execution time in milis: 17273.4725

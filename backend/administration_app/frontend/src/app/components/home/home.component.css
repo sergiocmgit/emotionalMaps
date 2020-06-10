@@ -1,0 +1,68 @@
+div.databaseRoutes {
+	margin: 2em;
+}
+
+h2.databaseRoutes {
+	margin-bottom: 1em;
+}
+
+button.databaseRoutes {
+	float: right;
+	color: "accent";
+}
+
+span.routeControls{
+	display: flex;
+}
+
+.routeControls{
+	margin-right: 0;
+	margin-left: auto;
+}
+
+mat-list{
+	padding: 0;
+}
+
+mat-list-item{
+	width: 100%;
+	margin: 0;
+}
+
+mat-divider {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+#lightText {
+	font-size: small;
+	font-weight: lighter;
+	margin-right: 1em;
+	color: gray;
+}
+
+#delete, #notReachable {
+	color: red;
+}
+
+#reachable {
+	color: green;
+}
+
+#routeTitle {
+	font-weight: bold;
+	font-size: medium;
+}
+
+#refreshGrey {
+	color: rgb(221, 221, 221);
+}
+
+#routeUsername {
+	margin-right: 1em;
+}
+
+div.scheduler {
+	text-align: right;
+	margin-right: 2em;
+}

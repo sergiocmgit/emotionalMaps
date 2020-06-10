@@ -1,0 +1,38 @@
+<button mat-icon-button class="goBack" (click)="goBack()">
+	<mat-icon>arrow_back</mat-icon>
+</button>
+<div class="general">
+	<h2 class="editRoute">
+		Edit existing route
+	</h2>
+	<form [formGroup]="newRoute">
+		<mat-form-field appearance="legacy">
+			<mat-label>Name</mat-label>
+			<input matInput type="text" formControlName="name">
+		</mat-form-field>
+		<br>
+		<mat-form-field appearance="legacy" id="uri">
+			<mat-label>uri</mat-label>
+			<input matInput type="text" formControlName="uri">
+		</mat-form-field>
+		<button mat-icon-button disabled>
+			<mat-icon id="reachable" class="status" *ngIf="isReachable">check_circle</mat-icon>
+			<mat-icon id="notReachable" class="status" *ngIf="!isReachable">highlight_off</mat-icon>
+		</button>
+		<br>
+		<mat-form-field appearance="legacy" id="username">
+			<mat-label>Username</mat-label>
+			<input matInput type="text" formControlName="username">
+		</mat-form-field>
+		<br>
+		<mat-form-field appearance="legacy" id="password">
+			<mat-label>Password</mat-label>
+			<input matInput type="text" formControlName="password">
+		</mat-form-field>
+	</form>
+	<div class="controls">
+		<button mat-raised-button id="tryConnection" (click)="tryConnection()">Try connection</button>
+		<br>
+		<button mat-raised-button id="save" (click)="save()">Save</button>
+	</div>
+</div>

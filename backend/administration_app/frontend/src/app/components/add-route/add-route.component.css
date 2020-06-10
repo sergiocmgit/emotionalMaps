@@ -1,0 +1,27 @@
+div.general {
+	margin-top: 1em;
+	margin-left: 2em;
+}
+
+h2.addRoute {
+	margin-bottom: 1em;
+}
+
+div.controls{
+}
+
+#tryConnection, #save {
+	margin-top: 1em;
+}
+
+#reachable {
+	color: green;
+}
+
+#notReachable {
+	color: red;
+}
+
+#uri {
+	width: 80%;
+}

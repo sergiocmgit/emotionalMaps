@@ -1,0 +1,41 @@
+<div class="databaseRoutes">
+	<h2 class="databaseRoutes">Database routes
+		<button mat-raised-button class="databaseRoutes" color="primary" (click)="goAddRoute()">Add route</button>
+	</h2>
+	<mat-list *ngFor="let route of routes; last as last">
+		<span id="lightText">Name: </span>
+		<span id="routeTitle">{{route.name}}</span>
+		<mat-list-item>
+			<span id="lightText">uri: </span>
+			<span class="routeUri">{{route.uri}}</span>
+			<span class="routeControls">
+				<span id="lightText" style="margin-top: 11px;">status</span>
+				<button mat-icon-button class="routeControls" *ngIf="!route.status" disabled>
+					<mat-icon id="notReachable" class="status">highlight_off</mat-icon>
+				</button>
+				<button mat-icon-button class="routeControls" *ngIf="route.status" disabled>
+					<mat-icon id="reachable" class="status">check_circle</mat-icon>
+				</button>
+				<button mat-icon-button class="routeControls" *ngIf="route.status" (click)="routeIsReachable(route)">
+					<mat-icon id="refreshGrey">autorenew</mat-icon>
+				</button>
+				<button mat-icon-button class="routeControls" *ngIf="!route.status" (click)="routeIsReachable(route)">
+					<mat-icon id="refresh">autorenew</mat-icon>
+				</button>
+				<button mat-icon-button class="routeControls" (click)="goEditRoute(route)">
+					<mat-icon id="edit">edit</mat-icon>
+				</button>
+				<button mat-icon-button class="routeControls" (click)="deleteRoute(route)">
+					<mat-icon id="delete">delete</mat-icon>
+				</button>
+			</span>
+		</mat-list-item>
+		<mat-list-item>
+			<span id="lightText">Username: </span>
+			<span id="routeUsername">{{route.username}}</span>
+			<span id="lightText">Password: </span>
+			<span id="routePassword">{{route.password}}</span>
+		</mat-list-item>
+		<mat-divider *ngIf="!last"></mat-divider>
+	</mat-list>
+</div>

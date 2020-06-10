@@ -1,0 +1,21 @@
+<div class="contenedor" [class.example-is-mobile]="mobileQuery.matches" *ngIf="shouldRun">
+	<mat-toolbar class="toolbar">
+		<button mat-mini-fab color="primary" (click)="snav.toggle()">
+			<mat-icon>menu</mat-icon>
+		</button>
+		<h1 class="titulo">Mapa de emociones</h1>
+	</mat-toolbar>
+	<mat-sidenav-container class="sidenav" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+		<mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'">
+			<mat-list-item *ngFor="let f of filtros">
+				<h4>{{f.nombre}}</h4>
+				<select name={{f.nombre}} id={{f.nombre}}>
+					<option *ngFor="let opt of f.opciones" value="opt.value">{{opt.viewValue}}</option>
+				</select>
+			</mat-list-item>
+		</mat-sidenav>
+		<mat-sidenav-content>
+			<router-outlet></router-outlet>
+		</mat-sidenav-content>
+	</mat-sidenav-container>
+</div>
