@@ -74,7 +74,7 @@ public class OSMdownloader {
 		StringBuilder address = new StringBuilder();
 		address.append(this.xapiURL);
 		address.append("?way[bbox=");
-		address.append(bottom + "," + left + "," + top + "," + right);
+		address.append(left + "," + bottom + "," + right + "," + top);
 		address.append("]");
 		String json = httpGET(address.toString());
 		try {

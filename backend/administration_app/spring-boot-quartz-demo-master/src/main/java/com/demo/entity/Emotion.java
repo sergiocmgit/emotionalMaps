@@ -19,9 +19,10 @@ public class Emotion {
 	private char gender;
 	private char type;
 	private String segment;
+	private String idMysql;
 
 	public Emotion(Date time1, Date time2, Position point1, Position point2, int emotion, int age, char gender,
-			char type, String segment) {
+			char type, String segment, String idMysql) {
 		this.time1 = time1;
 		this.time2 = time2;
 		this.point1 = point1;
@@ -31,6 +32,7 @@ public class Emotion {
 		this.gender = gender;
 		this.type = type;
 		this.segment = segment;
+		this.idMysql = idMysql;
 	}
 
 	@Override
@@ -54,5 +56,9 @@ public class Emotion {
 
 	public void setSegment(String segment) {
 		this.segment = segment;
+	}
+
+	public String getIdMysql() {
+		return idMysql;
 	}
 }

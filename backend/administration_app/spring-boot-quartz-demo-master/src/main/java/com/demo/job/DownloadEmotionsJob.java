@@ -14,11 +14,11 @@ import java.util.Date;
 
 import com.demo.entity.Emotion;
 import com.demo.entity.MatrixQuadrant;
-import com.demo.entity.Position;
 import com.demo.entity.Segment;
 import com.demo.repository.EmotionRepository;
 import com.demo.repository.MatrixQuadrantRepository;
 import com.demo.repository.SegmentRepository;
+import com.demo.service.EmotionsDownloader;
 import com.demo.service.JobService;
 import com.demo.service.OSMdownloader;
 import com.demo.service.SegmentLinker;
@@ -29,6 +29,8 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 
 	@Autowired
 	JobService jobService;
+	@Autowired
+	EmotionsDownloader emotionsDownloader;
 
 	@Autowired
 	MatrixQuadrantRepository matrixQuadrantRepository;
@@ -55,10 +57,9 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 
 		// Here is the job logic
 		OSMdownloader osm = new OSMdownloader(segmentRepository);
+
 		// Pick up the emotions
-		ArrayList<Emotion> emotions = new ArrayList<>();
-		emotions.add(
-				new Emotion(new Date(), new Date(), new Position(42, -3), new Position(42, -3), 3, 23, 'M', 'C', null));
+		ArrayList<Emotion> emotions = emotionsDownloader.retrieveEmotions("localhost/geoemo", "root", "admin");
 
 		// Find which quadrant belongs each emotion
 		for (Emotion emotion : emotions) {
@@ -91,6 +92,7 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 			Segment s = segmentLinker.segmentByEmotion(emotion.getPoint1(), emotion.getPoint2());
 			emotion.setSegment(s.getId());
 			emotionRepository.save(emotion);
+			emotionsDownloader.deleteEmotion(emotion,"localhost/geoemo", "root", "admin");
 		}
 
 		System.out.println("Thread: " + Thread.currentThread().getName() + " stopped.");

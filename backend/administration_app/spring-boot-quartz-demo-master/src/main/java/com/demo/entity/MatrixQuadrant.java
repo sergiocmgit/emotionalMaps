@@ -65,7 +65,8 @@ public class MatrixQuadrant {
 		double top, bottom, left, right;
 
 		if (p.getLat() >= 0) {
-			System.out.println(0);
+			if (debug)
+				System.out.println(0);
 			bottom = truncate(p.getLat() / intervalSize) * intervalSize;
 		} else if (p.getLat() / intervalSize - truncate(p.getLat() / intervalSize) == 0) {
 			bottom = truncate(p.getLat() / intervalSize) * intervalSize;

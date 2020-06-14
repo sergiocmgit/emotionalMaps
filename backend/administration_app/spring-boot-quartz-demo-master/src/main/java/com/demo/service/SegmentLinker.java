@@ -7,7 +7,9 @@ import com.demo.entity.Segment;
 import com.demo.repository.SegmentRepository;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SegmentLinker {
 
 	private boolean debug = false;
