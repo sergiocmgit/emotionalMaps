@@ -15,17 +15,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmotionsDownloader {
 
-	public boolean isReachable(String url, String user, String password) {
+	public boolean isReachable(String uri, String user, String password) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + uri + "?" + "serverTimezone=UTC" + "&user=" + user + "&password=" + password);
+			boolean b = con.isValid(10000);
+			con.close();
+			return b;
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 		return false;
 	}
 
-	public ArrayList<Emotion> retrieveEmotions(String url, String user, String password) {
+	public ArrayList<Emotion> retrieveEmotions(String uri, String user, String password) {
 		ArrayList<Emotion> emotions = new ArrayList<>();
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://" + url + "?" + "serverTimezone=UTC" + "&user=" + user + "&password=" + password);
+					"jdbc:mysql://" + uri + "?" + "serverTimezone=UTC" + "&user=" + user + "&password=" + password);
 
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(
@@ -62,11 +72,11 @@ public class EmotionsDownloader {
 		return emotions;
 	}
 
-	public void deleteEmotion(Emotion emotion, String url, String user, String password) {
+	public void deleteEmotion(Emotion emotion, String uri, String user, String password) {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://" + url + "?" + "serverTimezone=UTC" + "&user=" + user + "&password=" + password);
+					"jdbc:mysql://" + uri + "?" + "serverTimezone=UTC" + "&user=" + user + "&password=" + password);
 
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate("delete from emocaptures where id=" + emotion.getIdMysql());

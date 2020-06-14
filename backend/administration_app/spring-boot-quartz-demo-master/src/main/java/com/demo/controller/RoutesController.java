@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.dto.ServerResponse;
 import com.demo.entity.Route;
+import com.demo.service.EmotionsDownloader;
 import com.demo.service.RouteService;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
@@ -24,6 +25,8 @@ public class RoutesController {
 
 	@Autowired
 	private RouteService routeService;
+	@Autowired
+	private EmotionsDownloader emotionsDownloader;
 
 	@GetMapping("/allroutes")
 	public ServerResponse getAllRoutes() {
@@ -80,7 +83,8 @@ public class RoutesController {
 	@GetMapping("/reachability/{id}")
 	public boolean checkReachablity(@PathVariable String id) {
 		System.out.println("CHECK REACHABILITY " + id);
-		return true;
+		Route r = routeService.getRouteById(id);
+		return emotionsDownloader.isReachable(r.getUri(), r.getUsername(), r.getPassword());
 	}
 
 	public ServerResponse getServerResponse(int responseCode, Object data) {

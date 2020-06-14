@@ -52,12 +52,7 @@ export class EditRouteComponent {
 
 	tryConnection(): void {
 		this.routeService.checkReachability(this.routeID).subscribe(res => {
-			console.log("Is reachable?---> " + res);
-			console.log(this.newRoute.value);
-
-			// The new status of reachability will be calculated here
-			var random = Math.random();
-			this.isReachable = random < 0.5;
+			this.isReachable = res;
 		})
 	}
 

@@ -14,9 +14,11 @@ import java.util.Date;
 
 import com.demo.entity.Emotion;
 import com.demo.entity.MatrixQuadrant;
+import com.demo.entity.Route;
 import com.demo.entity.Segment;
 import com.demo.repository.EmotionRepository;
 import com.demo.repository.MatrixQuadrantRepository;
+import com.demo.repository.RouteMongoRepository;
 import com.demo.repository.SegmentRepository;
 import com.demo.service.EmotionsDownloader;
 import com.demo.service.JobService;
@@ -39,6 +41,8 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 	SegmentRepository segmentRepository;
 	@Autowired
 	EmotionRepository emotionRepository;
+	@Autowired
+	RouteMongoRepository routeMongoRepository;
 
 	@Override
 	protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
@@ -55,11 +59,25 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 		String myValue = dataMap.getString("myKey");
 		System.out.println("Value:" + myValue);
 
+		for (Route route : routeMongoRepository.findAll()) {
+			downloadEmotions(route.getUri(), route.getUsername(), route.getPassword());
+		}
+
+		System.out.println("Thread: " + Thread.currentThread().getName() + " stopped.");
+	}
+
+	@Override
+	public void interrupt() throws UnableToInterruptJobException {
+		System.out.println("Stopping thread... ");
+		toStopFlag = false;
+	}
+
+	public void downloadEmotions(String uri, String username, String password) {
 		// Here is the job logic
 		OSMdownloader osm = new OSMdownloader(segmentRepository);
 
 		// Pick up the emotions
-		ArrayList<Emotion> emotions = emotionsDownloader.retrieveEmotions("localhost/geoemo", "root", "admin");
+		ArrayList<Emotion> emotions = emotionsDownloader.retrieveEmotions(uri, username, password);
 
 		// Find which quadrant belongs each emotion
 		for (Emotion emotion : emotions) {
@@ -92,16 +110,8 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 			Segment s = segmentLinker.segmentByEmotion(emotion.getPoint1(), emotion.getPoint2());
 			emotion.setSegment(s.getId());
 			emotionRepository.save(emotion);
-			emotionsDownloader.deleteEmotion(emotion,"localhost/geoemo", "root", "admin");
+			// emotionsDownloader.deleteEmotion(emotion, uri, username, password);
 		}
-
-		System.out.println("Thread: " + Thread.currentThread().getName() + " stopped.");
-	}
-
-	@Override
-	public void interrupt() throws UnableToInterruptJobException {
-		System.out.println("Stopping thread... ");
-		toStopFlag = false;
 	}
 
 }

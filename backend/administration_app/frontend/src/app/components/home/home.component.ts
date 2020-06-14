@@ -39,8 +39,9 @@ export class HomeComponent {
 					uri: r['uri'],
 					username: r['username'],
 					password: r['password'],
-					status: this.routeIsReachable(r)
-				})
+					status: false
+				});
+				this.routeIsReachable(r);
 			}
 		})
 	}
@@ -50,21 +51,13 @@ export class HomeComponent {
 	In case of success the array "routes" is updated and returns true.
 	Otherwise, the array "routes" is updated and returns false.
 	 */
-	routeIsReachable(route): boolean {
-		// The new status of reachability will be calculated here
-		var random = Math.random();
-		var newStatus: boolean = random < 0.5;
-
-		var index = this.routes.findIndex(r => r.id == route.id);
-		if (index != -1) {
-			this.routes[index].status = newStatus;
-		}
-
+	routeIsReachable(route): void {
 		this.routeService.checkReachability(route.id).subscribe(res => {
-			console.log(res);
+			var index = this.routes.findIndex(r => r.id == route.id);
+			if (index != -1) {
+				this.routes[index].status = res;
+			}
 		})
-
-		return newStatus;
 	}
 
 	/* 
