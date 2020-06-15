@@ -23,18 +23,15 @@ public class UserRepositoryTest {
 	@Autowired
 	private UserService userService;
 
-	@Before
-	public void addUser() {
-		User user = userService.findByUsername("admin");
-		if (user == null) {
-			userRepository.insert(user);
-		}
-	}
-
 	@Test
-	public void login() {
-		User user = userService.login("admin", "admin");
+	public void signupAndLogin() {
+		User user = userService.signup("pruebaTest", "pruebaTest");
 		assertNotNull(user);
+		user = userService.login("pruebaTest", "pruebaTest");
+		assertNotNull(user);
+		userRepository.delete(user);
+		user = userService.login("pruebaTest", "pruebaTest");
+		assertNull(user);
 	}
 
 }
