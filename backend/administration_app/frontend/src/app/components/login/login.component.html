@@ -1,0 +1,19 @@
+<div class="general">
+	<h2 class="addRoute">
+		Login
+	</h2>
+	<form [formGroup]="loginForm">
+		<mat-form-field appearance="legacy" id="username">
+			<mat-label>Username</mat-label>
+			<input matInput type="text" formControlName="username">
+		</mat-form-field>
+		<br>
+		<mat-form-field appearance="legacy" id="password">
+			<mat-label>Password</mat-label>
+			<input matInput type="password" formControlName="password">
+		</mat-form-field>
+	</form>
+	<div class="controls">
+		<button mat-raised-button id="save" (click)="login()">Enter</button>
+	</div>
+</div>

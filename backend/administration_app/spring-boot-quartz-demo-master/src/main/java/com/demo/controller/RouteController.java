@@ -21,7 +21,7 @@ import com.demo.service.RouteService;
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("/routes")
-public class RoutesController {
+public class RouteController {
 
 	@Autowired
 	private RouteService routeService;

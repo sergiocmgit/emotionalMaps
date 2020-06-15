@@ -4,3 +4,7 @@
 #routesButton {
 	margin-left: 2em;
 }
+#loginButton {
+	position: absolute;
+	right: 2em;
+}

@@ -3,7 +3,7 @@ package com.demo.service;
 import java.util.List;
 
 import com.demo.entity.Route;
-import com.demo.repository.RouteMongoRepository;
+import com.demo.repository.RouteRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,22 +12,22 @@ import org.springframework.stereotype.Service;
 public class RouteServiceImpl implements RouteService {
 
 	@Autowired
-	private RouteMongoRepository routeMongoRepository;
+	private RouteRepository routeRepository;
 
 	@Override
 	public List<Route> getAllRoutes() {
-		return routeMongoRepository.findAll();
+		return routeRepository.findAll();
 	}
 
 	@Override
 	public Route getRouteById(String id) {
-		return routeMongoRepository.findById(id);
+		return routeRepository.findById(id);
 	}
 
 	@Override
 	public Route addRoute(Route route) {
 		try {
-			return routeMongoRepository.insert(route);
+			return routeRepository.insert(route);
 		} catch (Exception e) {
 			return null;
 		}
@@ -37,7 +37,7 @@ public class RouteServiceImpl implements RouteService {
 	public Route editRoute(String id, String name, String uri, String username, String password) {
 		try {
 			Route route = new Route(id, name, uri, username, password);
-			return routeMongoRepository.save(route);
+			return routeRepository.save(route);
 		} catch (Exception e) {
 			return null;
 		}
@@ -46,7 +46,7 @@ public class RouteServiceImpl implements RouteService {
 	@Override
 	public boolean deleteRoute(String id) {
 		try {
-			routeMongoRepository.delete(id);
+			routeRepository.delete(id);
 			return true;
 		} catch (Exception e) {
 			return false;

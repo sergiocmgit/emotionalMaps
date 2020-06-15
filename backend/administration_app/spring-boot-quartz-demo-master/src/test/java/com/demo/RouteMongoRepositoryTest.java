@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.*;
 
 import com.demo.entity.Route;
-import com.demo.repository.RouteMongoRepository;
+import com.demo.repository.RouteRepository;
 import com.demo.service.RouteService;
 
 @RunWith(SpringRunner.class)
@@ -19,7 +19,7 @@ import com.demo.service.RouteService;
 public class RouteMongoRepositoryTest {
 
 	@Autowired
-	private RouteMongoRepository routeMongoRepository;
+	private RouteRepository routeRepository;
 	@Autowired
 	private RouteService routeService;
 
@@ -30,8 +30,8 @@ public class RouteMongoRepositoryTest {
 		// save product, verify has ID value after save
 		assertNull(route1.getId());
 		assertNull(route2.getId());// null before save
-		this.routeMongoRepository.save(route1);
-		this.routeMongoRepository.save(route2);
+		this.routeRepository.save(route1);
+		this.routeRepository.save(route2);
 		assertNotNull(route1.getId());
 		assertNotNull(route2.getId());
 	}
@@ -39,11 +39,11 @@ public class RouteMongoRepositoryTest {
 	@Test
 	public void testFetchData() {
 		/* Test data retrieval */
-		Route routeA = routeMongoRepository.findByName("Zaragoza");
+		Route routeA = routeRepository.findByName("Zaragoza");
 		assertNotNull(routeA);
 		assertEquals("uri:Zaragoza", routeA.getUri());
 		/* Get all products, list should only have two */
-		Iterable<Route> routes = routeMongoRepository.findAll();
+		Iterable<Route> routes = routeRepository.findAll();
 		int count = 0;
 		for (Route r : routes) {
 			count++;
@@ -105,7 +105,7 @@ public class RouteMongoRepositoryTest {
 
 	@After
 	public void tearDown() throws Exception {
-		this.routeMongoRepository.deleteAll();
+		this.routeRepository.deleteAll();
 	}
 
 }

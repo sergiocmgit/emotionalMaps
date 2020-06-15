@@ -21,12 +21,14 @@ import { MatInputModule } from '@angular/material/input';
 import { EditRouteComponent } from './components/edit-route/edit-route.component';
 import { SchedulerComponent } from './components/scheduler/scheduler.component';
 import { MatSelectModule } from '@angular/material/select';
+import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
 	{ path: 'home', component: HomeComponent },
 	{ path: 'addroute', component: AddRouteComponent },
 	{ path: 'editroute/:routeID', component: EditRouteComponent },
 	{ path: 'scheduler', component: SchedulerComponent },
+	{ path: 'login', component: LoginComponent },
 	{ path: '', redirectTo: '/home', pathMatch: 'full' },
 ]
 
@@ -37,7 +39,8 @@ const routes: Routes = [
 		ConfirmRouteDeleteComponent,
 		AddRouteComponent,
 		EditRouteComponent,
-		SchedulerComponent
+		SchedulerComponent,
+		LoginComponent
 	],
 	imports: [
 		BrowserModule,

@@ -18,7 +18,7 @@ import com.demo.entity.Route;
 import com.demo.entity.Segment;
 import com.demo.repository.EmotionRepository;
 import com.demo.repository.MatrixQuadrantRepository;
-import com.demo.repository.RouteMongoRepository;
+import com.demo.repository.RouteRepository;
 import com.demo.repository.SegmentRepository;
 import com.demo.service.EmotionsDownloader;
 import com.demo.service.JobService;
@@ -42,7 +42,7 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 	@Autowired
 	EmotionRepository emotionRepository;
 	@Autowired
-	RouteMongoRepository routeMongoRepository;
+	RouteRepository routeRepository;
 
 	@Override
 	protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
@@ -59,7 +59,7 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 		String myValue = dataMap.getString("myKey");
 		System.out.println("Value:" + myValue);
 
-		for (Route route : routeMongoRepository.findAll()) {
+		for (Route route : routeRepository.findAll()) {
 			downloadEmotions(route.getUri(), route.getUsername(), route.getPassword());
 		}
 

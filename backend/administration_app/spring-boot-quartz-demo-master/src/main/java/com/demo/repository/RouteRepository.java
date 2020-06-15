@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface RouteMongoRepository extends MongoRepository<Route, String> {
+public interface RouteRepository extends MongoRepository<Route, String> {
 	Route findById(String id);
 	Route findByName(String name);
 	Route findByUri(String uri);
