@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from './services/user.service';
 
 @Component({
 	selector: 'app-root',
@@ -9,17 +10,23 @@ import { Router } from '@angular/router';
 export class AppComponent {
 	title = 'frontend';
 
-	constructor(private router: Router){}
+	constructor(private router: Router,
+		private userService: UserService) { }
 
-	goSchedulerPage(){
+	goSchedulerPage() {
 		this.router.navigate(['/scheduler']);
 	}
 
-	goRoutesPage(){
+	goRoutesPage() {
 		this.router.navigate(['/home']);
 	}
 
-	goLoginPage(){
-		this.router.navigate(['/login']);
+	goProfilePage() {
+		if (localStorage.getItem('token') != null) {
+			this.router.navigate(['/profile']);
+		}
+		else {
+			this.router.navigate(['/login']);
+		}
 	}
 }

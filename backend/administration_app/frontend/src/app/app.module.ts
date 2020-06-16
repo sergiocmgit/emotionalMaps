@@ -23,6 +23,7 @@ import { SchedulerComponent } from './components/scheduler/scheduler.component';
 import { MatSelectModule } from '@angular/material/select';
 import { LoginComponent } from './components/login/login.component';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
 	{ path: 'home', component: HomeComponent },
@@ -30,6 +31,7 @@ const routes: Routes = [
 	{ path: 'editroute/:routeID', component: EditRouteComponent },
 	{ path: 'scheduler', component: SchedulerComponent },
 	{ path: 'login', component: LoginComponent },
+	{ path: 'profile', component: ProfileComponent },
 	{ path: '', redirectTo: '/home', pathMatch: 'full' },
 ]
 
@@ -41,7 +43,8 @@ const routes: Routes = [
 		AddRouteComponent,
 		EditRouteComponent,
 		SchedulerComponent,
-		LoginComponent
+		LoginComponent,
+		ProfileComponent
 	],
 	imports: [
 		BrowserModule,
@@ -62,11 +65,11 @@ const routes: Routes = [
 		MatSelectModule
 	],
 	providers: [
-		/* {
+		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: AuthInterceptorService,
 			multi: true
-		} */
+		}
 	],
 	bootstrap: [AppComponent]
 })

@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
-const BACKEND_URL =  environment.apiUrl + '/users';
+const BACKEND_URL = environment.apiUrl + '/users';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class UserService {
 
-	constructor(private http: HttpClient) { }
+	constructor(private http: HttpClient,
+		private router: Router) { }
 
 	login(username: String, password: String) {
 		var body = {
@@ -19,11 +21,8 @@ export class UserService {
 		return this.http.post<JSON>(BACKEND_URL + '/login', body);
 	}
 
-	logout(id: String) {
-		return this.http.get<JSON>(BACKEND_URL + '/route/' + id);
-	}
-
-	signUp(username: String, password: String) {
-
+	logout() {
+		localStorage.removeItem('token');
+		this.router.navigate(['login']);
 	}
 }

@@ -27,11 +27,12 @@ public class UserRepositoryTest {
 	public void signupAndLogin() {
 		User user = userService.signup("pruebaTest", "pruebaTest");
 		assertNotNull(user);
-		user = userService.login("pruebaTest", "pruebaTest");
-		assertNotNull(user);
+		String token;
+		token = userService.login("pruebaTest", "pruebaTest");
+		assertNotNull(token);
 		userRepository.delete(user);
-		user = userService.login("pruebaTest", "pruebaTest");
-		assertNull(user);
+		token = userService.login("pruebaTest", "pruebaTest");
+		assertNull(token);
 	}
 
 }

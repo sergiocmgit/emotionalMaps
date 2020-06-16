@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-login',
@@ -14,7 +15,8 @@ export class LoginComponent {
 		password: new FormControl()
 	});
 
-	constructor(private userService: UserService) { }
+	constructor(private userService: UserService,
+		private router: Router) { }
 
 	login(): void {
 		this.userService.login(this.loginForm.get('username').value, this.loginForm.get('password').value)
@@ -22,8 +24,11 @@ export class LoginComponent {
 				res => {
 					if (res['statusCode'] == 200) {
 						console.log("INICIO DE SESION BIEN");
+						console.log(res['data']);
+						localStorage.setItem('token', res['data']);
+						this.router.navigate(['home']);
 					}
-					else{
+					else {
 						console.log("INICIO DE SESION MAL");
 					}
 				},

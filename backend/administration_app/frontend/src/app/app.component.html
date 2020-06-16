@@ -1,7 +1,9 @@
 <mat-toolbar color="primary">Emotions Map Administration
 	<button mat-stroked-button id="routesButton" color="basic" (click)="goRoutesPage()">View routes</button>
 	<button mat-stroked-button id="schedulerButton" color="basic" (click)="goSchedulerPage()">Set scheduler</button>
-	<button mat-flat-button id="loginButton" color="basic" (click)="goLoginPage()">Login</button>
+	<button mat-flat-button id="loginButton" color="basic" (click)="goProfilePage()">
+		Profile <mat-icon>person</mat-icon>
+	</button>
 </mat-toolbar>
 <!-- The routed views render in the <router-outlet>-->
 <router-outlet></router-outlet>

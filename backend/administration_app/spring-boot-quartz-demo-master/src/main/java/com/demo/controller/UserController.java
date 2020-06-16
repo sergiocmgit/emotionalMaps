@@ -2,6 +2,7 @@ package com.demo.controller;
 
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,9 +25,11 @@ public class UserController {
 
 	@PostMapping("/login")
 	public ServerResponse login(@RequestBody Map<String, Object> req) {
-		User user = userService.login(req.get("username").toString(), req.get("password").toString());
-		if (user != null) {
-			return getServerResponse(200, user);
+		String token = userService.login(req.get("username").toString(), req.get("password").toString());
+		if (token != null) {
+			JSONObject json = new JSONObject();
+			json.put("token", token);
+			return getServerResponse(200, token);
 		} else {
 			return getServerResponse(400, null);
 		}

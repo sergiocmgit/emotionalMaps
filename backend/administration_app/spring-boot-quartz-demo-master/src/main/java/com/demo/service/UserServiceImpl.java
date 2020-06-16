@@ -38,12 +38,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User login(String username, String password) {
+	public String login(String username, String password) {
 		User user = userRepository.findByUsername(username);
 		if (user != null && bCryptPasswordEncoder.matches(password, user.getPassword())) {
 			String token = createJWT(user.getUsername());
 			System.out.println(token);
-			return user;
+			return token;
 		} else {
 			return null;
 		}
