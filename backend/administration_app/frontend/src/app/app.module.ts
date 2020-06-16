@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -22,6 +22,7 @@ import { EditRouteComponent } from './components/edit-route/edit-route.component
 import { SchedulerComponent } from './components/scheduler/scheduler.component';
 import { MatSelectModule } from '@angular/material/select';
 import { LoginComponent } from './components/login/login.component';
+import { AuthInterceptorService } from './services/auth-interceptor.service';
 
 const routes: Routes = [
 	{ path: 'home', component: HomeComponent },
@@ -60,7 +61,13 @@ const routes: Routes = [
 		HttpModule,
 		MatSelectModule
 	],
-	providers: [],
+	providers: [
+		/* {
+			provide: HTTP_INTERCEPTORS,
+			useClass: AuthInterceptorService,
+			multi: true
+		} */
+	],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }
