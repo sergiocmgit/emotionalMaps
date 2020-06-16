@@ -28,8 +28,8 @@ export class HomeComponent implements OnInit {
 	//Returns the segment style
 	style() {
 		return {
-			weight: 12,
-			/* weight: 2, */
+			/* weight: 12, */
+			weight: 2,
 			opacity: 5,
 			color: 'red',
 			dashArray: '1',

@@ -3,9 +3,10 @@ import datetime
 import time
 import random
 
-LIMIT = 10
-offsetLng = 120.0
-offsetLat = 32.0
+LIMIT = 10000
+offsetLng = -0.86
+offsetLat = 41.64
+quadrantSize = 0.02
 
 # Establishing the connection
 conn = mysql.connector.connect(
@@ -21,21 +22,21 @@ i = 0
 while i < LIMIT:
 	i += 1
 	# Longitud para el punto 1 de una toma de datos
-	lng1 = offsetLng + 0.2*random.random()
+	lng1 = offsetLng + quadrantSize*random.random()
 	# Latitud para el punto 1 de una toma de datos
-	lat1 = offsetLat + 0.2*random.random()
+	lat1 = offsetLat + quadrantSize*random.random()
 	# Longitud para el punto 2 de una toma de datos
-	lng2 = offsetLng+0.0001*random.random()
+	lng2 = lng1+0.0001*random.random()
 	# Latitud para el punto 2 de una toma de datos
-	lat2 = offsetLat+0.0001*random.random()
+	lat2 = lat1+0.0001*random.random()
 
 	# Día y hora
 	ts = time.time()
 	timestamp = datetime.datetime.fromtimestamp(
 		ts).strftime('%Y-%m-%d %H:%M:%S')
 
-	feeling = random.randint(1,5)  # Emoción numerada de 1 a 5
-	age = random.randint(15,80)  # Edad entre 15 y 80
+	feeling = random.randint(1, 5)  # Emoción numerada de 1 a 5
+	age = random.randint(15, 80)  # Edad entre 15 y 80
 
 	# Masculino y Femenino más probables que Otros
 	g = random.random()
