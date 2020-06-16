@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions, RequestMethod, RequestOptionsArgs, URLSearchParams } from '@angular/http';
 import { map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
-const BACKEND_URL = 'http://localhost:7080';
+const BACKEND_URL =  environment.apiUrl;
 
 @Injectable({
 	providedIn: 'root'
