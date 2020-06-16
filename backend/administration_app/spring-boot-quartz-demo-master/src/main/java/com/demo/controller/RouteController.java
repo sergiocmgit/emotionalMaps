@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +18,7 @@ import com.demo.dto.ServerResponse;
 import com.demo.entity.Route;
 import com.demo.service.EmotionsDownloader;
 import com.demo.service.RouteService;
+import com.demo.util.JWTCoder;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
@@ -29,13 +31,19 @@ public class RouteController {
 	private EmotionsDownloader emotionsDownloader;
 
 	@GetMapping("/allroutes")
-	public ServerResponse getAllRoutes() {
+	public ServerResponse getAllRoutes(@RequestHeader("Authorization") String jwt) {
+		if (!JWTCoder.isValidJWT(jwt)) {
+			return getServerResponse(400, null);
+		}
 		System.out.println("GET ALL ROUTES");
 		return getServerResponse(200, routeService.getAllRoutes());
 	}
 
 	@GetMapping("/route/{id}")
-	public ServerResponse getRoute(@PathVariable String id) {
+	public ServerResponse getRoute(@RequestHeader("Authorization") String jwt, @PathVariable String id) {
+		if (!JWTCoder.isValidJWT(jwt)) {
+			return getServerResponse(400, null);
+		}
 		System.out.println("GET ROUTE WITH ID: " + id);
 		Route route = routeService.getRouteById(id);
 		if (route != null) {
@@ -46,7 +54,10 @@ public class RouteController {
 	}
 
 	@PostMapping("/route")
-	public ServerResponse addroute(@RequestBody Map<String, Object> req) {
+	public ServerResponse addroute(@RequestHeader("Authorization") String jwt, @RequestBody Map<String, Object> req) {
+		if (!JWTCoder.isValidJWT(jwt)) {
+			return getServerResponse(400, null);
+		}
 		System.out.println("ADD ROUTE");
 		Route route = routeService.addRoute(new Route(null, req.get("name").toString(), req.get("uri").toString(),
 				req.get("username").toString(), req.get("password").toString()));
@@ -58,7 +69,11 @@ public class RouteController {
 	}
 
 	@PutMapping("/route/{id}")
-	public ServerResponse editroute(@RequestBody Map<String, Object> req, @PathVariable String id) {
+	public ServerResponse editroute(@RequestHeader("Authorization") String jwt, @RequestBody Map<String, Object> req,
+			@PathVariable String id) {
+		if (!JWTCoder.isValidJWT(jwt)) {
+			return getServerResponse(400, null);
+		}
 		System.out.println("EDIT ROUTE " + id);
 		Route route = routeService.editRoute(id, req.get("name").toString(), req.get("uri").toString(),
 				req.get("username").toString(), req.get("password").toString());
@@ -70,21 +85,28 @@ public class RouteController {
 	}
 
 	@DeleteMapping("/route/{id}")
-	public ServerResponse deleteroute(@PathVariable String id) {
-		System.out.println("DELETE ROUTE WITH ID: " + id);
-		boolean deleted = routeService.deleteRoute(id);
-		if (deleted) {
-			return getServerResponse(200, deleted);
-		} else {
-			return getServerResponse(400, deleted);
+	public ServerResponse deleteroute(@RequestHeader("Authorization") String jwt, @PathVariable String id) {
+		if (!JWTCoder.isValidJWT(jwt)) {
+			return getServerResponse(400, null);
 		}
+		System.out.println("DELETE ROUTE WITH ID: " + id);
+			boolean deleted = routeService.deleteRoute(id);
+			if (deleted) {
+				return getServerResponse(200, deleted);
+			} else {
+				return getServerResponse(400, deleted);
+			}
 	}
 
 	@GetMapping("/reachability/{id}")
-	public boolean checkReachablity(@PathVariable String id) {
+	public boolean checkReachablity(@RequestHeader("Authorization") String jwt, @PathVariable String id) {
 		System.out.println("CHECK REACHABILITY " + id);
-		Route r = routeService.getRouteById(id);
-		return emotionsDownloader.isReachable(r.getUri(), r.getUsername(), r.getPassword());
+		if (JWTCoder.isValidJWT(jwt)) {
+			Route r = routeService.getRouteById(id);
+			return emotionsDownloader.isReachable(r.getUri(), r.getUsername(), r.getPassword());
+		} else {
+			return false;
+		}
 	}
 
 	public ServerResponse getServerResponse(int responseCode, Object data) {

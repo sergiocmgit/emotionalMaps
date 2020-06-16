@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ import com.demo.job.DownloadEmotionsJob;
 import com.demo.job.DownloadOSMJob;
 import com.demo.job.SimpleJob;
 import com.demo.service.JobService;
+import com.demo.util.JWTCoder;
 import com.demo.util.ServerResponseCode;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
@@ -30,9 +32,12 @@ public class JobController {
 	JobService jobService;
 
 	@RequestMapping("schedule")
-	public ServerResponse schedule(@RequestParam("jobName") String jobName,
+	public ServerResponse schedule(@RequestHeader("Authorization") String jwt, @RequestParam("jobName") String jobName,
 			@RequestParam("jobScheduleTime") @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm") Date jobScheduleTime,
 			@RequestParam("cronExpression") String cronExpression, @RequestParam("jobType") String jobType) {
+		if (!JWTCoder.isValidJWT(jwt)) {
+			return getServerResponse(400, null);
+		}
 		System.out.println("JobController.schedule()");
 
 		// Job Name is mandatory
@@ -68,8 +73,7 @@ public class JobController {
 				boolean status;
 				if (jobType.equals("download-osm")) {
 					// DownloadOSM Cron Trigger
-					status = jobService.scheduleCronJob(jobName, DownloadOSMJob.class, jobScheduleTime,
-							cronExpression);
+					status = jobService.scheduleCronJob(jobName, DownloadOSMJob.class, jobScheduleTime, cronExpression);
 				} else if (jobType.equals("download-emotions")) {
 					// DownloadEmotions Cron Trigger
 					status = jobService.scheduleCronJob(jobName, DownloadEmotionsJob.class, jobScheduleTime,
@@ -91,13 +95,18 @@ public class JobController {
 	}
 
 	@RequestMapping("unschedule")
-	public void unschedule(@RequestParam("jobName") String jobName) {
-		System.out.println("JobController.unschedule()");
-		jobService.unScheduleJob(jobName);
+	public void unschedule(@RequestHeader("Authorization") String jwt, @RequestParam("jobName") String jobName) {
+		if (JWTCoder.isValidJWT(jwt)) {
+			System.out.println("JobController.unschedule()");
+			jobService.unScheduleJob(jobName);
+		}
 	}
 
 	@RequestMapping("delete")
-	public ServerResponse delete(@RequestParam("jobName") String jobName) {
+	public ServerResponse delete(@RequestHeader("Authorization") String jwt, @RequestParam("jobName") String jobName) {
+		if (!JWTCoder.isValidJWT(jwt)) {
+			return getServerResponse(400, null);
+		}
 		System.out.println("JobController.delete()");
 
 		if (jobService.isJobWithNamePresent(jobName)) {
@@ -120,7 +129,10 @@ public class JobController {
 	}
 
 	@RequestMapping("pause")
-	public ServerResponse pause(@RequestParam("jobName") String jobName) {
+	public ServerResponse pause(@RequestHeader("Authorization") String jwt, @RequestParam("jobName") String jobName) {
+		if (!JWTCoder.isValidJWT(jwt)) {
+			return getServerResponse(400, null);
+		}
 		System.out.println("JobController.pause()");
 
 		if (jobService.isJobWithNamePresent(jobName)) {
@@ -145,7 +157,10 @@ public class JobController {
 	}
 
 	@RequestMapping("resume")
-	public ServerResponse resume(@RequestParam("jobName") String jobName) {
+	public ServerResponse resume(@RequestHeader("Authorization") String jwt, @RequestParam("jobName") String jobName) {
+		if (!JWTCoder.isValidJWT(jwt)) {
+			return getServerResponse(400, null);
+		}
 		System.out.println("JobController.resume()");
 
 		if (jobService.isJobWithNamePresent(jobName)) {
@@ -171,9 +186,12 @@ public class JobController {
 	}
 
 	@RequestMapping("update")
-	public ServerResponse updateJob(@RequestParam("jobName") String jobName,
+	public ServerResponse updateJob(@RequestHeader("Authorization") String jwt, @RequestParam("jobName") String jobName,
 			@RequestParam("jobScheduleTime") @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm") Date jobScheduleTime,
 			@RequestParam("cronExpression") String cronExpression) {
+		if (!JWTCoder.isValidJWT(jwt)) {
+			return getServerResponse(400, null);
+		}
 		System.out.println("JobController.updateJob()");
 
 		// Job Name is mandatory
@@ -209,7 +227,10 @@ public class JobController {
 	}
 
 	@RequestMapping("jobs")
-	public ServerResponse getAllJobs() {
+	public ServerResponse getAllJobs(@RequestHeader("Authorization") String jwt) {
+		if (!JWTCoder.isValidJWT(jwt)) {
+			return getServerResponse(400, null);
+		}
 		System.out.println("JobController.getAllJobs()");
 
 		List<Map<String, Object>> list = jobService.getAllJobs();
@@ -217,7 +238,11 @@ public class JobController {
 	}
 
 	@RequestMapping("checkJobName")
-	public ServerResponse checkJobName(@RequestParam("jobName") String jobName) {
+	public ServerResponse checkJobName(@RequestHeader("Authorization") String jwt,
+			@RequestParam("jobName") String jobName) {
+		if (!JWTCoder.isValidJWT(jwt)) {
+			return getServerResponse(400, null);
+		}
 		System.out.println("JobController.checkJobName()");
 
 		// Job Name is mandatory
@@ -230,7 +255,11 @@ public class JobController {
 	}
 
 	@RequestMapping("isJobRunning")
-	public ServerResponse isJobRunning(@RequestParam("jobName") String jobName) {
+	public ServerResponse isJobRunning(@RequestHeader("Authorization") String jwt,
+			@RequestParam("jobName") String jobName) {
+		if (!JWTCoder.isValidJWT(jwt)) {
+			return getServerResponse(400, null);
+		}
 		System.out.println("JobController.isJobRunning()");
 
 		boolean status = jobService.isJobRunning(jobName);
@@ -238,7 +267,11 @@ public class JobController {
 	}
 
 	@RequestMapping("jobState")
-	public ServerResponse getJobState(@RequestParam("jobName") String jobName) {
+	public ServerResponse getJobState(@RequestHeader("Authorization") String jwt,
+			@RequestParam("jobName") String jobName) {
+		if (!JWTCoder.isValidJWT(jwt)) {
+			return getServerResponse(400, null);
+		}
 		System.out.println("JobController.getJobState()");
 
 		String jobState = jobService.getJobState(jobName);
@@ -246,9 +279,11 @@ public class JobController {
 	}
 
 	@RequestMapping("stop")
-	public ServerResponse stopJob(@RequestParam("jobName") String jobName) {
+	public ServerResponse stopJob(@RequestHeader("Authorization") String jwt, @RequestParam("jobName") String jobName) {
+		if (!JWTCoder.isValidJWT(jwt)) {
+			return getServerResponse(400, null);
+		}
 		System.out.println("JobController.stopJob()");
-
 		if (jobService.isJobWithNamePresent(jobName)) {
 
 			if (jobService.isJobRunning(jobName)) {
@@ -272,7 +307,11 @@ public class JobController {
 	}
 
 	@RequestMapping("start")
-	public ServerResponse startJobNow(@RequestParam("jobName") String jobName) {
+	public ServerResponse startJobNow(@RequestHeader("Authorization") String jwt,
+			@RequestParam("jobName") String jobName) {
+		if (!JWTCoder.isValidJWT(jwt)) {
+			return getServerResponse(400, null);
+		}
 		System.out.println("JobController.startJobNow()");
 
 		if (jobService.isJobWithNamePresent(jobName)) {

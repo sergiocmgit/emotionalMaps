@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
 	public String login(String username, String password) {
 		User user = userRepository.findByUsername(username);
 		if (user != null && bCryptPasswordEncoder.matches(password, user.getPassword())) {
-			return JWTCoder.createJWT();
+			return JWTCoder.createJWT(user.getUsername());
 		} else {
 			return null;
 		}

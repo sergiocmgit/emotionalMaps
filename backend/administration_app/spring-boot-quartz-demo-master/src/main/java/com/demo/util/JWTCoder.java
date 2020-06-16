@@ -15,7 +15,7 @@ public class JWTCoder {
 	private static final String SECRET_KEY = "secretkey";
 	private static final String ISSUER = "emotionalMap";
 
-	public static String createJWT() {
+	public static String createJWT(String username) {
 
 		// The JWT signature algorithm we will be using to sign the token
 		SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
@@ -25,7 +25,8 @@ public class JWTCoder {
 		Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
 		// Let's set the JWT Claims
-		JwtBuilder builder = Jwts.builder().setIssuer(ISSUER).signWith(signatureAlgorithm, signingKey);
+		JwtBuilder builder = Jwts.builder().setIssuer(ISSUER).setSubject(username).signWith(signatureAlgorithm,
+				signingKey);
 
 		// Builds the JWT and serializes it to a compact, URL-safe string
 		return builder.compact();
@@ -33,13 +34,18 @@ public class JWTCoder {
 
 	public static Claims decodeJWT(String jwt) {
 		// This line will throw an exception if it is not a signed JWS (as expected)
+		System.out.println(jwt);
 		Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY)).parseClaimsJws(jwt)
 				.getBody();
 		return claims;
 	}
 
 	public static boolean isValidJWT(String jwt) {
-		Claims claims = decodeJWT(jwt);
-		return claims.get("iss").equals(ISSUER);
+		try {
+			Claims claims = decodeJWT(jwt.replace("Bearer ", ""));
+			return claims.get("iss").equals(ISSUER);
+		} catch (Exception e) {
+			return false;
+		}
 	}
 }
