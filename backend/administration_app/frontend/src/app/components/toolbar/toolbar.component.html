@@ -1,0 +1,11 @@
+<mat-toolbar color="primary">Emotions Map Administration
+	<button mat-stroked-button *ngIf="thereIsToken" id="routesButton" color="basic" (click)="goRoutesPage()">
+		View routes
+	</button>
+	<button mat-stroked-button *ngIf="thereIsToken" id="schedulerButton" color="basic" (click)="goSchedulerPage()">
+		Set scheduler
+	</button>
+	<button mat-flat-button *ngIf="thereIsToken" id="loginButton" color="basic" (click)="logout()">
+		Logout
+	</button>
+</mat-toolbar>

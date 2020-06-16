@@ -24,6 +24,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { LoginComponent } from './components/login/login.component';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { ProfileComponent } from './components/profile/profile.component';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
 
 const routes: Routes = [
 	{ path: 'home', component: HomeComponent },
@@ -44,7 +45,8 @@ const routes: Routes = [
 		EditRouteComponent,
 		SchedulerComponent,
 		LoginComponent,
-		ProfileComponent
+		ProfileComponent,
+		ToolbarComponent
 	],
 	imports: [
 		BrowserModule,
