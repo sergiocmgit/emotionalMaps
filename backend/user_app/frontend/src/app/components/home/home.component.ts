@@ -2,10 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as L from 'leaflet';
 import { segments } from '../../../assets/coordenadas/exportFilteredGeoJson.js';
 import { DatabaseAccessService } from '../../services/database-access.service'
-import { throwError } from 'rxjs/internal/observable/throwError';
-import { SidenavComponent } from '../sidenav/sidenav.component.js';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-home',
@@ -15,30 +12,28 @@ import { Subscription } from 'rxjs';
 export class HomeComponent implements OnInit {
 
 	private map;
+	private layerGroup = new L.LayerGroup();
 	private filter: String;
-	private subscription: Subscription;
 
 	constructor(private dbService: DatabaseAccessService,
 		private activatedroute: ActivatedRoute) {
+		console.log("CONSTRUCTOR")
 		this.activatedroute.paramMap.subscribe(params => {
 			this.filter = params.get('filter');
-			/* this.map.eachLayer(function (layer) {
-				this.map.removeLayer(layer);
-			}); */
-			this.buildSegments();
+			/* console.log(this.map); */
+			/* this.map.removeLayer(this.layerGroup); */
+			/* this.buildSegments(); */
 		});
 
 	}
 
 	ngOnInit() {
-		this.map = null;
+		console.log("NG ON INIT")
 		this.map = L.map("map").setView([41.649914, -0.877733], 13);
 		L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 			attribution:
 				'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(this.map);
-
-		console.log("DEBERIA DESCARGAR DE NUEVO");
 		this.buildSegments();
 	}
 

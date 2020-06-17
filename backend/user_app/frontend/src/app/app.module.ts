@@ -16,7 +16,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MapComponent } from './components/map/map.component';
 
 const appRoutes: Routes = [
 	{
@@ -32,8 +31,7 @@ const appRoutes: Routes = [
 	declarations: [
 		AppComponent,
 		HomeComponent,
-		SidenavComponent,
-		MapComponent
+		SidenavComponent
 	],
 	imports: [
 		BrowserModule,

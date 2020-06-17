@@ -20,6 +20,12 @@ interface option {
 })
 export class SidenavComponent implements OnDestroy {
 
+	public time = "morning";
+	public season = "spring";
+	public gender = "male";
+	public age = "adult";
+	public type = "citizen";
+
 	filters: Filter[] = [
 		{
 			name: "Time section", value: "time", options: [
@@ -103,15 +109,10 @@ export class SidenavComponent implements OnDestroy {
 
 	filter(): String {
 		var filter: String = this.time + '.' + this.season + '.' + this.gender + '.' + this.age + '.' + this.type;
-		this.router.navigate(['/home/' + filter]);
+		/* this.router.navigate(['/home/' + filter]); */
+		window.location.href = "http://localhost:4200/home/" + filter;
 		return filter;
 	}
-
-	public time = "morning";
-	public season = "spring";
-	public gender = "male";
-	public age = "adult";
-	public type = "citizen";
 
 	shouldRun = true;
 

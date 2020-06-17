@@ -6,7 +6,7 @@
 		<h1 class="title">Emotions map</h1>
 	</mat-toolbar>
 	<mat-sidenav-container class="sidenav" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-		<mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'">
+		<mat-sidenav #snav>
 			<mat-list-item>
 				<h4 class="filter">Time section</h4>
 				<select [(ngModel)]="time" name="time" id="time" class="filter">
