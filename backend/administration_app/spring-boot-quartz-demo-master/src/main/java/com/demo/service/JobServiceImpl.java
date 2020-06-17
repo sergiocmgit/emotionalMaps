@@ -23,9 +23,6 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
 
-
-
-
 @Service
 public class JobServiceImpl implements JobService{
 

@@ -21,4 +21,8 @@ export class DatabaseAccessService {
 	getSegmentByWay(way) {
 		return this.http.get(apiURL + '/getSegmentByWay/' + way, { responseType: 'json' });
 	}
+
+	getEmotionsFiltered(filter: String) {
+		return this.http.get(apiURL + '/getEmotionsFiltered/' + filter, { responseType: 'json' });
+	}
 }

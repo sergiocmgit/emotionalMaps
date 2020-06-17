@@ -5,38 +5,30 @@ import { DatabaseAccessService } from '../../services/database-access.service'
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { SidenavComponent } from '../sidenav/sidenav.component.js';
 import { ActivatedRoute } from '@angular/router';
+import { MessageService } from 'src/app/services/message.service.js';
 import { Subscription } from 'rxjs';
 
 @Component({
-	selector: 'app-home',
-	templateUrl: './home.component.html',
-	styleUrls: ['./home.component.css']
+	selector: 'app-map',
+	templateUrl: './map.component.html',
+	styleUrls: ['./map.component.css']
 })
-export class HomeComponent implements OnInit {
+export class MapComponent implements OnInit {
 
 	private map;
 	private filter: String;
-	private subscription: Subscription;
 
-	constructor(private dbService: DatabaseAccessService,
-		private activatedroute: ActivatedRoute) {
-		this.activatedroute.paramMap.subscribe(params => {
-			this.filter = params.get('filter');
-			/* this.map.eachLayer(function (layer) {
-				this.map.removeLayer(layer);
-			}); */
-			this.buildSegments();
-		});
-
-	}
+	constructor(private dbService: DatabaseAccessService) { }
 
 	ngOnInit() {
-		this.map = null;
-		this.map = L.map("map").setView([41.649914, -0.877733], 13);
-		L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-			attribution:
-				'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(this.map);
+		/* console.log(this.filter); */
+		if (this.map == null) {
+			this.map = L.map("map").setView([41.649914, -0.877733], 13);
+			L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+				attribution:
+					'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+			}).addTo(this.map);
+		}
 
 		console.log("DEBERIA DESCARGAR DE NUEVO");
 		this.buildSegments();
@@ -73,6 +65,46 @@ export class HomeComponent implements OnInit {
 			dashArray: '1',
 			fillOpacity: 0
 		};
+	}
+
+	highlightFeature(e) {
+		const layer = e.target;
+		layer.setStyle({
+			weight: 4,
+			opacity: 1.0,
+			color: 'blue',
+			fillOpacity: 0.6,
+			fillColor: '#F0FFFF'
+		});
+
+	}
+
+	resetHighlight(e) {
+		const layer = e.target;
+		layer.setStyle({
+			weight: 2,
+			opacity: 5,
+			color: 'black',
+			dashArray: '1',
+			fillOpacity: 0.1
+		});
+	}
+
+	zoomToFeature(e) {
+		this.map.fitBounds(e.target.getBounds());
+	}
+
+	onEachSegment(feature, layer) {
+		//console.log(feature);
+		if (feature.properties.way > 1) {
+			layer.setStyle({
+				color: 'blue'
+			})
+		}
+		layer.on({
+			mouseover: (e) => (this.highlightFeature(e)),
+			mouseout: (e) => (this.resetHighlight(e))
+		})
 	}
 
 	//Transforms a json segment into a geojson segment

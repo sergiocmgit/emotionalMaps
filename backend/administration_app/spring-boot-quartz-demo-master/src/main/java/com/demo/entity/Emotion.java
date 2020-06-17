@@ -61,4 +61,25 @@ public class Emotion {
 	public String getIdMysql() {
 		return idMysql;
 	}
+
+	public int getEmotion() {
+		return emotion;
+	}
+
+	public Date getTime1() {
+		return time1;
+	}
+
+	public char getGender() {
+		return gender;
+	}
+
+	public char getType() {
+		return type;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
 }

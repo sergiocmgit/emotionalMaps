@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
+const MongoClient = require('mongodb').MongoClient;
+const url = 'mongodb://localhost/emotionsMap'
 var config = require('../models/db');
 const Emotion = mongoose.model('Emotion');
 const Segment = mongoose.model('Segment');
+
+const dbName = "emotionsMap";
 
 const getAllEmotions = function (req, res) {
 	Emotion
@@ -20,20 +24,17 @@ const getAllEmotions = function (req, res) {
 					.json(err);
 				return;
 			}
-			/* console.log(emotions) */
 			res
 				.status(200)
 				.json({ data: emotions });
 		});
-	/* console.log("EMOTIONS SENDED") */
 }
 
 const getSegmentByWay = function (req, res) {
 	var way = req.params.way;
 	Segment
-		.findOne({_id: way})
+		.findOne({ _id: way })
 		.exec((err, segment) => {
-			/* console.log(segment) */
 			if (!segment) {
 				res
 					.status(404)
@@ -51,10 +52,24 @@ const getSegmentByWay = function (req, res) {
 				.status(200)
 				.json(segment);
 		});
-	/* console.log("SEGMENT SENDED") */
+}
+
+const getEmotionsFiltered = function (req, res) {
+	MongoClient.connect('mongodb://localhost', function (err, client) {
+		if (err) throw err;
+
+		var db = client.db(dbName);
+		db.collection(req.params.filter).find().toArray(function (err, documents) {
+			console.log(documents)
+			res
+				.status(200)
+				.json({ data: documents });
+		});
+	});
 }
 
 module.exports = {
 	getAllEmotions,
-	getSegmentByWay
+	getSegmentByWay,
+	getEmotionsFiltered
 }
