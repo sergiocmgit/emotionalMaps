@@ -10,6 +10,7 @@ import com.demo.entity.Position;
 import com.demo.entity.Segment;
 import com.demo.repository.SegmentRepository;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -130,7 +131,7 @@ public class OSMdownloader {
 			ways.add(word);
 		}
 
-		int numWways = 0;
+		int numWays = 0;
 		int numNodes = 0;
 
 		StringBuilder address = new StringBuilder();
@@ -146,12 +147,12 @@ public class OSMdownloader {
 
 			JSONObject json = new JSONObject(jsonString);
 			/* System.out.println(json.getJSONArray("elements")); */
-			numWways++;
+			numWays++;
 			numNodes += json.getJSONArray("elements").length() - 1;
 			saveWayOnDatabase(json);
 		}
 
-		myFile.write(numWways + " ways\n");
+		myFile.write(numWays + " ways\n");
 		myFile.write(numNodes + " nodes\n");
 
 		reader.close();
@@ -160,32 +161,50 @@ public class OSMdownloader {
 
 	public void saveWayOnDatabase(JSONObject json) {
 		/* System.out.println("------------"); */
-		JSONObject element;
+		JSONObject wayInfo;
+		JSONArray nodesInfo;
 		int length = json.getJSONArray("elements").length();
 
 		// Get the way detailed info
-		element = json.getJSONArray("elements").getJSONObject(length - 1);
-		/* System.out.println(element); */
+		wayInfo = json.getJSONArray("elements").getJSONObject(length - 1);
+		nodesInfo = json.getJSONArray("elements");
 
 		// Save into the database
-		int way_id = element.getInt("id");
+		long way_id = wayInfo.getInt("id");
 		Date date = new Date();
-		int node1_id, node2_id;
+		long node1_id, node2_id;
 		double lng, lat;
 		Position pos1, pos2;
-		for (int i = 0; i < json.getJSONArray("elements").length() - 2; i++) {
-			node1_id = json.getJSONArray("elements").getJSONObject(i).getInt("id");
-			lng = json.getJSONArray("elements").getJSONObject(i).getDouble("lon");
-			lat = json.getJSONArray("elements").getJSONObject(i).getDouble("lat");
+		JSONObject node1Info, node2Info;
+		for (int i = 0; i < wayInfo.getJSONArray("nodes").length() - 1; i++) {
+
+			node1_id = wayInfo.getJSONArray(("nodes")).getLong(i);
+			node2_id = wayInfo.getJSONArray(("nodes")).getLong(i + 1);
+			node1Info = binarySearch(nodesInfo, 0, nodesInfo.length() - 1, node1_id);
+			node2Info = binarySearch(nodesInfo, 0, nodesInfo.length() - 1, node2_id);
+
+			lng = node1Info.getDouble("lon");
+			lat = node1Info.getDouble("lat");
 			pos1 = new Position(lng, lat);
 
-			node2_id = json.getJSONArray("elements").getJSONObject(i + 1).getInt("id");
-			lng = json.getJSONArray("elements").getJSONObject(i + 1).getDouble("lon");
-			lat = json.getJSONArray("elements").getJSONObject(i + 1).getDouble("lat");
+			lng = node2Info.getDouble("lon");
+			lat = node2Info.getDouble("lat");
 			pos2 = new Position(lng, lat);
 
 			Segment s = new Segment(way_id, node1_id, node2_id, pos1, pos2, date);
 			segmentRepository.save(s);
+		}
+	}
+
+	private static JSONObject binarySearch(JSONArray nodesInfo, int first, int last, long node_id) {
+		int size = last - first;
+		int middle = first + size / 2;
+		if (nodesInfo.getJSONObject(middle).getLong("id") == node_id) {
+			return nodesInfo.getJSONObject(middle);
+		} else if (nodesInfo.getJSONObject(middle).getLong("id") > node_id) {
+			return binarySearch(nodesInfo, first, middle, node_id);
+		} else {
+			return binarySearch(nodesInfo, middle + 1, last, node_id);
 		}
 	}
 
