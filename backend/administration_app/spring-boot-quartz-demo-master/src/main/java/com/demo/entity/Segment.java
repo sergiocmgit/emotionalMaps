@@ -14,9 +14,9 @@ public class Segment {
 	// <way_id>-<node1_id>-<node2_id>
 	@Id
 	private String id;
-	private int way_id;
-	private int node1_id;
-	private int node2_id;
+	private long way_id;
+	private long node1_id;
+	private long node2_id;
 	private Position point1;
 	private Position point2;
 
@@ -25,7 +25,7 @@ public class Segment {
 
 	private Date lastFetch;
 
-	public Segment(int way_id, int node1_id, int node2_id, Position point1, Position point2, Date lastFetch) {
+	public Segment(long way_id, long node1_id, long node2_id, Position point1, Position point2, Date lastFetch) {
 		if (node1_id < node2_id) {
 			this.id = way_id + "_" + node1_id + "_" + node2_id;
 		} else {
