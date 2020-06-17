@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
-const BACKEND_URL =  environment.apiUrl;
+const BACKEND_URL = environment.apiUrl;
 
 @Injectable({
 	providedIn: 'root'
@@ -22,8 +22,14 @@ export class SchedulerService {
 	stopJobUrl = "/scheduler/stop";
 	startJobNowUrl = "/scheduler/start";
 
+	/* Http functions are not intercepted so the token has to be set manually, for future versions it is better to use HttpClient */
 	private options = new RequestOptions(
-		{ headers: new Headers({ 'Content-Type': 'application/json' }) });
+		{
+			headers: new Headers({
+				'Content-Type': 'application/json',
+				'Authorization': localStorage.getItem('token')
+			})
+		});
 
 	constructor(
 		private _http: Http,
@@ -34,15 +40,15 @@ export class SchedulerService {
 		return this.http.get<JSON>(BACKEND_URL + this.getJobsUrl);
 	}
 
-	scheduleJob(data){
-        let params: URLSearchParams = new URLSearchParams();
-        for(let key in data) {
-            params.set(key, data[key]);
-        }
-        this.options.search = params;
+	scheduleJob(data) {
+		let params: URLSearchParams = new URLSearchParams();
+		for (let key in data) {
+			params.set(key, data[key]);
+		}
+		this.options.search = params;
 
-        return this._http.get(BACKEND_URL + this.scheduleJobUrl, this.options).pipe(map(res => res.json())); 
-    }
+		return this._http.get(BACKEND_URL + this.scheduleJobUrl, this.options).pipe(map(res => res.json()));
+	}
 
 	isJobWithNamePresent(data) {
 		let params: URLSearchParams = new URLSearchParams();
