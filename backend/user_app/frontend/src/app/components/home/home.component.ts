@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
 	constructor(private dbService: DatabaseAccessService) { }
 
 	ngOnInit() {
-		this.map = L.map("map").setView([41.649914, -0.877733], 16);
+		this.map = L.map("map").setView([41.649914, -0.877733], 13);
 		L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 			attribution:
 				'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
