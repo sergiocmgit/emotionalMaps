@@ -23,7 +23,6 @@ import { SchedulerComponent } from './components/scheduler/scheduler.component';
 import { MatSelectModule } from '@angular/material/select';
 import { LoginComponent } from './components/login/login.component';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
-import { ProfileComponent } from './components/profile/profile.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 
 const routes: Routes = [
@@ -32,7 +31,6 @@ const routes: Routes = [
 	{ path: 'editroute/:routeID', component: EditRouteComponent },
 	{ path: 'scheduler', component: SchedulerComponent },
 	{ path: 'login', component: LoginComponent },
-	{ path: 'profile', component: ProfileComponent },
 	{ path: '', redirectTo: '/home', pathMatch: 'full' },
 ]
 
@@ -45,7 +43,6 @@ const routes: Routes = [
 		EditRouteComponent,
 		SchedulerComponent,
 		LoginComponent,
-		ProfileComponent,
 		ToolbarComponent
 	],
 	imports: [
