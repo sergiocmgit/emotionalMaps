@@ -7,7 +7,7 @@ from randomtimestamp import randomtimestamp
 LIMIT = 10000
 offsetLng = -0.9
 offsetLat = 41.6
-quadrantSize = 0.22
+quadrantSize = 0.2
 
 # Establishing the connection
 conn = mysql.connector.connect(

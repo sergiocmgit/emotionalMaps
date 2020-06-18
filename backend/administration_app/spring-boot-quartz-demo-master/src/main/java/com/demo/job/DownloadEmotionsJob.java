@@ -54,6 +54,9 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 	@Autowired
 	RouteRepository routeRepository;
 
+	private double quadrantSize = 0.2;
+	private double quadrantMarginPercentage = 0.1;
+
 	@Override
 	protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 		JobKey key = jobExecutionContext.getJobDetail().getKey();
@@ -91,8 +94,10 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 
 		// Find which quadrant belongs each emotion
 		for (Emotion emotion : emotions) {
-			ArrayList<MatrixQuadrant> quadrants = MatrixQuadrant.getMatrixQuadrantList(emotion.getPoint1(), 0.02, 0.1);
-			quadrants.addAll(MatrixQuadrant.getMatrixQuadrantList(emotion.getPoint2(), 0.02, 0.1));
+			ArrayList<MatrixQuadrant> quadrants = MatrixQuadrant.getMatrixQuadrantList(emotion.getPoint1(),
+					this.quadrantSize, this.quadrantMarginPercentage);
+			quadrants.addAll(MatrixQuadrant.getMatrixQuadrantList(emotion.getPoint2(), this.quadrantSize,
+					this.quadrantMarginPercentage));
 			// Find out if the quadrant or quadrants have been already downloaded
 			for (MatrixQuadrant q : quadrants) {
 				// System.out.println(q.toString());
