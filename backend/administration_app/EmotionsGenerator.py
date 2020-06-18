@@ -5,7 +5,7 @@ import random
 from randomtimestamp import randomtimestamp
 
 LIMIT = 10000
-offsetLng = -0.9
+offsetLng = -1
 offsetLat = 41.6
 quadrantSize = 0.2
 
