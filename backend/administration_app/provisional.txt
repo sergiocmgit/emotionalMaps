@@ -1,5 +1,0 @@
-32.18, 32.2, 120.14, 120.16
-33 ways
-1215 nodes
-Total execution time in milis: 5518.8734
-asdfasd

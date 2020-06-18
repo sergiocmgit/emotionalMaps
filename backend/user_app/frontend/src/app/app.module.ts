@@ -1,13 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { HttpClientModule }    from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { Routes, RouterModule } from '@angular/router';
-import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -18,20 +17,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const appRoutes: Routes = [
-	{
-		path: '', component: SidenavComponent, children: [
-			{ path: '', redirectTo: 'home', pathMatch: 'full' },
-			{ path: 'home/:filter', component: HomeComponent },
-			{ path: 'home', component: HomeComponent },
-		]
-	},
+
+	{ path: '', redirectTo: 'home', pathMatch: 'full' },
+	{ path: 'home/:filter', component: HomeComponent },
+	{ path: 'home', component: HomeComponent }
 ]
 
 @NgModule({
 	declarations: [
 		AppComponent,
-		HomeComponent,
-		SidenavComponent
+		HomeComponent
 	],
 	imports: [
 		BrowserModule,
@@ -50,7 +45,7 @@ const appRoutes: Routes = [
 		MatSelectModule,
 		MatFormFieldModule,
 		FormsModule,
-        ReactiveFormsModule,
+		ReactiveFormsModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent]

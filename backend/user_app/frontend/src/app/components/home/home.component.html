@@ -6,6 +6,19 @@
 </head>
 
 <body>
+	<div class="header">
+		<mat-toolbar class="toolbar">
+			<h1 class="title">Emotions map</h1>
+			<div class="selectors">
+	
+				<select *ngFor="let f of filters; let i=index" [(ngModel)]="allFilters[i]" class="filter">
+					<option *ngFor="let opt of f.options" value={{opt.value}}>{{opt.viewValue}}</option>
+				</select>
+	
+				<button (click)="refreshMap()">Filter</button>
+			</div>
+		</mat-toolbar>
+	</div>
 	<div id="map">
 	</div>
 </body>

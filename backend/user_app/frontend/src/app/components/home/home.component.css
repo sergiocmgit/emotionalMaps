@@ -1,3 +1,19 @@
 #map {
 	height: 100%;
 }
+
+div.header{
+	background-color: #3a93c4;
+}
+
+div.selectors{
+	text-align: end;
+	right: 1em;
+	padding-top: 0.5em;
+	position: fixed;
+}
+
+select.filter{
+	margin-left: 1em;
+	margin-right: 1em;
+}

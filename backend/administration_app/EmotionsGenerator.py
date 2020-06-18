@@ -2,11 +2,12 @@ import mysql.connector
 import datetime
 import time
 import random
+from randomtimestamp import randomtimestamp
 
 LIMIT = 10000
-offsetLng = -0.86
-offsetLat = 41.64
-quadrantSize = 0.02
+offsetLng = -0.9
+offsetLat = 41.6
+quadrantSize = 0.22
 
 # Establishing the connection
 conn = mysql.connector.connect(
@@ -14,9 +15,6 @@ conn = mysql.connector.connect(
 
 # Creating a cursor object using the cursor() method
 cursor = conn.cursor()
-
-ts = time.time()
-timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 
 i = 0
 while i < LIMIT:
@@ -31,9 +29,7 @@ while i < LIMIT:
 	lat2 = lat1+0.0001*random.random()
 
 	# Día y hora
-	ts = time.time()
-	timestamp = datetime.datetime.fromtimestamp(
-		ts).strftime('%Y-%m-%d %H:%M:%S')
+	timestamp = randomtimestamp(start_year=2019, text=False)
 
 	feeling = random.randint(1, 5)  # Emoción numerada de 1 a 5
 	age = random.randint(15, 80)  # Edad entre 15 y 80
