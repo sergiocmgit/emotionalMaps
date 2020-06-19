@@ -73,7 +73,7 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 		System.out.println("Value:" + myValue);
 
 		for (Route route : routeRepository.findAll()) {
-			downloadEmotions(route.getUri(), route.getUsername(), route.getPassword());
+			downloadEmotions(route);
 		}
 
 		System.out.println("Thread: " + Thread.currentThread().getName() + " stopped.");
@@ -85,12 +85,17 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 		toStopFlag = false;
 	}
 
-	public void downloadEmotions(String uri, String username, String password) {
+	public void downloadEmotions(Route route) {
 		// Here is the job logic
 		OSMdownloader osm = new OSMdownloader(segmentRepository);
 
 		// Pick up the emotions
-		ArrayList<Emotion> emotions = emotionsDownloader.retrieveEmotions(uri, username, password);
+		ArrayList<Emotion> emotions = emotionsDownloader.retrieveEmotions(route);
+		// Update lastFetch of the route
+		if (emotions.size() > 0) {
+			route.updateLastFetch();
+			routeRepository.save(route);
+		}
 
 		// Find which quadrant belongs each emotion
 		for (Emotion emotion : emotions) {
@@ -131,7 +136,6 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 			String collectionName = collectionNameBuilder(emotion);
 			MongoCollection<Document> collection = database.getCollection(collectionName);
 			updateSegmentForFiltering(emotion, collection);
-			// emotionsDownloader.deleteEmotion(emotion, uri, username, password);
 		}
 		mongoClient.close();
 	}

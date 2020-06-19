@@ -1,5 +1,7 @@
 package com.demo.entity;
 
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -8,12 +10,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Route {
 	@Id
 	private String id;
-	@Indexed(unique=true)
+	@Indexed(unique = true)
 	private String name;
-	@Indexed(unique=true)
+	@Indexed(unique = true)
 	private String uri;
 	private String username;
 	private String password;
+	private Date lastFetch;
 
 	public Route(String id, String name, String uri, String username, String password) {
 		this.id = id;
@@ -21,6 +24,7 @@ public class Route {
 		this.uri = uri;
 		this.username = username;
 		this.password = password;
+		this.lastFetch = null;
 	}
 
 	public String getId() {
@@ -43,8 +47,18 @@ public class Route {
 		return password;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public Date getLastFetch() {
+		return lastFetch;
+	}
+
+	public void updateLastFetch() {
+		lastFetch = new Date();
+	}
+
+	@Override
+	public String toString() {
+		return "Route [id=" + id + ", lastFetch=" + lastFetch + ", name=" + name + ", password=" + password + ", uri="
+				+ uri + ", username=" + username + "]";
 	}
 
 }

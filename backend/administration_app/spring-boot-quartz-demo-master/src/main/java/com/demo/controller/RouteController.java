@@ -103,7 +103,7 @@ public class RouteController {
 		System.out.println("CHECK REACHABILITY " + id);
 		if (JWTCoder.isValidJWT(jwt)) {
 			Route r = routeService.getRouteById(id);
-			return emotionsDownloader.isReachable(r.getUri(), r.getUsername(), r.getPassword());
+			return emotionsDownloader.isReachable(r);
 		} else {
 			return false;
 		}
