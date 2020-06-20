@@ -244,4 +244,8 @@ public class MatrixQuadrant {
 	public void setLastFetch(Date lastFetch) {
 		this.lastFetch = lastFetch;
 	}
+
+	public String getId() {
+		return id;
+	}
 }

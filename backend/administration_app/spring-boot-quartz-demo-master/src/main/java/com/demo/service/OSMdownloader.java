@@ -4,8 +4,8 @@ import java.io.*;
 import java.net.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
+import com.demo.entity.MatrixQuadrant;
 import com.demo.entity.Position;
 import com.demo.entity.Segment;
 import com.demo.repository.SegmentRepository;
@@ -42,16 +42,18 @@ public class OSMdownloader {
 	 * extended api, reads the ids from the xml file, downloads every way from the
 	 * general api and uploads the needed info on the database
 	 */
-	public boolean downloadWays(double bottom, double top, double left, double right) throws Exception {
+	public boolean downloadWays(MatrixQuadrant matrixQuadrant) throws Exception {
 		double startTime = System.nanoTime();
-		if (downloadWaysXAPI(bottom, top, left, right)) {
+		if (downloadWaysXAPI(matrixQuadrant.getBottom(), matrixQuadrant.getTop(), matrixQuadrant.getLeft(),
+				matrixQuadrant.getRight())) {
 			/* if (true) { */
 			try {
 				FileWriter myFile = new FileWriter("provisional.txt");
-				myFile.write(bottom + ", " + top + ", " + left + ", " + right + '\n');
+				myFile.write(matrixQuadrant.getBottom() + ", " + matrixQuadrant.getTop() + ", "
+						+ matrixQuadrant.getLeft() + ", " + matrixQuadrant.getRight() + '\n');
 
 				readWaysXML(myFile);
-				downloadWaysOSM(myFile);
+				downloadWaysOSM(myFile, matrixQuadrant.getId());
 
 				double elapsedTime = System.nanoTime() - startTime;
 				System.out.println("Total execution time in milis: " + elapsedTime / 1000000);
@@ -118,10 +120,10 @@ public class OSMdownloader {
 	}
 
 	/*
-	 * Reads the way ids from the file and downloads their info from Open Street Map
+	 * Reads the way ids from the file, downloads their info from Open Street Map
 	 * and saves it in the database
 	 */
-	public boolean downloadWaysOSM(FileWriter myFile) throws Exception {
+	public boolean downloadWaysOSM(FileWriter myFile, String idMatrixQuadrant) throws Exception {
 		File file = new File("ways_xapi/ways-" + LocalDate.now() + ".txt");
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		String word;
@@ -149,7 +151,7 @@ public class OSMdownloader {
 			/* System.out.println(json.getJSONArray("elements")); */
 			numWays++;
 			numNodes += json.getJSONArray("elements").length() - 1;
-			saveWayOnDatabase(json);
+			saveWayOnDatabase(json, idMatrixQuadrant);
 		}
 
 		myFile.write(numWays + " ways\n");
@@ -159,7 +161,7 @@ public class OSMdownloader {
 		return false;
 	}
 
-	public void saveWayOnDatabase(JSONObject json) {
+	public void saveWayOnDatabase(JSONObject json, String idMatrixQuadrant) {
 		/* System.out.println("------------"); */
 		JSONObject wayInfo;
 		JSONArray nodesInfo;
@@ -171,7 +173,6 @@ public class OSMdownloader {
 
 		// Save into the database
 		long way_id = wayInfo.getInt("id");
-		Date date = new Date();
 		long node1_id, node2_id;
 		double lng, lat;
 		Position pos1, pos2;
@@ -191,7 +192,7 @@ public class OSMdownloader {
 			lat = node2Info.getDouble("lat");
 			pos2 = new Position(lng, lat);
 
-			Segment s = new Segment(way_id, node1_id, node2_id, pos1, pos2, date);
+			Segment s = new Segment(way_id, node1_id, node2_id, pos1, pos2, idMatrixQuadrant);
 			segmentRepository.save(s);
 		}
 	}

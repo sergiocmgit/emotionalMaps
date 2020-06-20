@@ -27,7 +27,7 @@ public class SegmentRepositoryTest {
 	public void fillDatabase() {
 		Position p1 = new Position(23.5464325, 64.53452);
 		Position p2 = new Position(-23.5464325, -64.53452);
-		Segment s = new Segment(4766164, 67413242, 357434523, p1, p2, new Date());
+		Segment s = new Segment(4766164, 67413242, 357434523, p1, p2, "idMatrixQuadrant");
 		segmentRepository.save(s);
 	}
 

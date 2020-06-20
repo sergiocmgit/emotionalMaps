@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
 public interface SegmentRepository extends MongoRepository<Segment, String> {
 	Segment findById(String id);
 
+	ArrayList<Segment> findByIdMatrixQuadrant(String idMatrixQuadrant);
+
 	@Query("{ 'way_id' : ?0, 'node1_id' : ?1, 'node2_id' : ?2 }")
 	Segment findByWayAndNode1_idAndNode2_id(int way_id, int node1_id, int node2_id);
 

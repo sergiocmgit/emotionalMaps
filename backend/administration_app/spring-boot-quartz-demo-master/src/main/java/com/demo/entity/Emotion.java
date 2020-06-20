@@ -76,4 +76,8 @@ public class Emotion {
 		return age;
 	}
 
+	public void removeSegment() {
+		this.segment = null;
+	}
+
 }

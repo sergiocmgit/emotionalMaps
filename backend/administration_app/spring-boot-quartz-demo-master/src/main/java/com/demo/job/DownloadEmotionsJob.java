@@ -55,7 +55,7 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 	RouteRepository routeRepository;
 
 	private double quadrantSize = 0.2;
-	private double quadrantMarginPercentage = 0.1;
+	private double quadrantMarginPercentage = 0.025;
 
 	@Override
 	protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
@@ -91,11 +91,6 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 
 		// Pick up the emotions
 		ArrayList<Emotion> emotions = emotionsDownloader.retrieveEmotions(route);
-		// Update lastFetch of the route
-		if (emotions.size() > 0) {
-			route.updateLastFetch();
-			routeRepository.save(route);
-		}
 
 		// Find which quadrant belongs each emotion
 		for (Emotion emotion : emotions) {
@@ -105,17 +100,18 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 					this.quadrantMarginPercentage));
 			// Find out if the quadrant or quadrants have been already downloaded
 			for (MatrixQuadrant q : quadrants) {
-				// System.out.println(q.toString());
 				MatrixQuadrant aux = matrixQuadrantRepository.findByBottomAndTopAndLeftAndRight(q.getBottom(),
 						q.getTop(), q.getLeft(), q.getRight());
 				// If the quadrant has not been downloaded yet, download it
 				if (aux == null) {
 					// Download OSM data
 					try {
-						if (osm.downloadWays(q.getBottom(), q.getTop(), q.getLeft(), q.getRight())) {
-							MatrixQuadrant newMatrixQuadrant = new MatrixQuadrant(q.getBottom(), q.getTop(),
-									q.getLeft(), q.getRight(), new Date());
-							matrixQuadrantRepository.save(newMatrixQuadrant);
+						MatrixQuadrant newMatrixQuadrant = new MatrixQuadrant(q.getBottom(), q.getTop(), q.getLeft(),
+								q.getRight(), new Date());
+						matrixQuadrantRepository.save(newMatrixQuadrant);
+						System.out.println(newMatrixQuadrant.toString());
+						if (!osm.downloadWays(newMatrixQuadrant)) {
+							matrixQuadrantRepository.delete(newMatrixQuadrant);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -137,6 +133,13 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 			MongoCollection<Document> collection = database.getCollection(collectionName);
 			updateSegmentForFiltering(emotion, collection);
 		}
+
+		// Update lastFetch of the route
+		if (emotions.size() > 0) {
+			route.updateLastFetch();
+			routeRepository.save(route);
+		}
+
 		mongoClient.close();
 	}
 

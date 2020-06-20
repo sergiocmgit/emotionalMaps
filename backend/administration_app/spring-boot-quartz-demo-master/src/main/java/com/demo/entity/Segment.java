@@ -19,13 +19,13 @@ public class Segment {
 	private long node2_id;
 	private Position point1;
 	private Position point2;
+	private String idMatrixQuadrant;
 
 	@GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
 	private GeoJsonLineString coordinates;
 
-	private Date lastFetch;
-
-	public Segment(long way_id, long node1_id, long node2_id, Position point1, Position point2, Date lastFetch) {
+	public Segment(long way_id, long node1_id, long node2_id, Position point1, Position point2,
+			String idMatrixQuadrant) {
 		if (node1_id < node2_id) {
 			this.id = way_id + "_" + node1_id + "_" + node2_id;
 		} else {
@@ -36,7 +36,7 @@ public class Segment {
 		this.node2_id = node2_id;
 		this.point1 = point1;
 		this.point2 = point2;
-		this.lastFetch = lastFetch;
+		this.idMatrixQuadrant = idMatrixQuadrant;
 
 		this.coordinates = new GeoJsonLineString(new GeoJsonPoint(point1.getLng(), point1.getLat()),
 				new GeoJsonPoint(point2.getLng(), point2.getLat()));
@@ -44,9 +44,9 @@ public class Segment {
 
 	@Override
 	public String toString() {
-		return "Segment [coordinates=" + coordinates + ", id=" + id + ", lastFetch=" + lastFetch + ", node1_id="
-				+ node1_id + ", node2_id=" + node2_id + ", point1=" + point1 + ", point2=" + point2 + ", way_id="
-				+ way_id + "]";
+		return "Segment [coordinates=" + coordinates + ", id=" + id + ", idMatrixQuadrant=" + idMatrixQuadrant
+				+ ", node1_id=" + node1_id + ", node2_id=" + node2_id + ", point1=" + point1 + ", point2=" + point2
+				+ ", way_id=" + way_id + "]";
 	}
 
 	public Position getPoint1() {
@@ -61,4 +61,7 @@ public class Segment {
 		return id;
 	}
 
+	public String getIdMatrixQuadrant() {
+		return idMatrixQuadrant;
+	}
 }
