@@ -88,27 +88,27 @@ export class HomeComponent implements OnInit {
 		var color;
 		switch (emotion) {
 			case 1:
-				color = 'yellow';
+				color = 'orange';
 				break;
 			case 2:
-				color = 'purple';
+				color = 'red';
 				break;
 			case 3:
-				color = 'white';
+				color = 'blue';
 				break;
 			case 4:
 				color = 'green';
 				break;
 			case 5:
-				color = 'blue'
+				color = 'white'
 				break;
 			default:
-				color = 'red'
+				color = 'black'
 				break;
 		}
 		return {
-			/* weight: 12, */
-			weight: 4,
+			weight: 12,
+			/* weight: 4, */
 			opacity: 5,
 			color: color,
 			dashArray: '1',
