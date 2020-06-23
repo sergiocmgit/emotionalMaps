@@ -46,7 +46,7 @@ public class MatrixQuadrant {
 
 	/**
 	 * Returns an ArrayList with the quadrant where the position belongs and its
-	 * adjacents if they are close enough
+	 * adjacent ones if they are close enough
 	 * 
 	 * @param p             Position of the point we do not know where belongs
 	 * @param intervalSize  One side size, in grades, of the matrix quadrant (e.g.
@@ -170,11 +170,6 @@ public class MatrixQuadrant {
 					right - intervalSize, null);
 			list.add(m4);
 		}
-
-		/*
-		 * for (MatrixQuadrant matrixQuadrant : list) {
-		 * System.out.println(matrixQuadrant.toString()); }
-		 */
 
 		return list;
 	}
