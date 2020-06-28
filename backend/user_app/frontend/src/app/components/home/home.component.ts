@@ -107,8 +107,8 @@ export class HomeComponent implements OnInit {
 				break;
 		}
 		return {
-			weight: 12,
-			/* weight: 4, */
+			/* weight: 12, */
+			weight: 4,
 			opacity: 5,
 			color: color,
 			dashArray: '1',
