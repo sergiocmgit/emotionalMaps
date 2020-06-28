@@ -1,5 +1,11 @@
-#map {
+body{
+	display: flex;
+	flex-flow: column;
 	height: 100%;
+}
+
+#map {
+	flex-grow : 1;
 }
 
 div.header{
