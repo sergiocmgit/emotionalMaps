@@ -4,10 +4,10 @@ import time
 import random
 from randomtimestamp import randomtimestamp
 
-LIMIT = 10000
-offsetLng = -1
-offsetLat = 41.6
-quadrantSize = 0.2
+LIMIT = 1000
+offsetLng = -0.9945
+offsetLat = 41.6055
+quadrantSize = 0.189
 
 # Establishing the connection
 conn = mysql.connector.connect(
@@ -30,6 +30,7 @@ while i < LIMIT:
 
 	# Día y hora
 	timestamp = randomtimestamp(start_year=2019, text=False)
+	#timestamp = datetime.datetime.now()
 
 	feeling = random.randint(1, 5)  # Emoción numerada de 1 a 5
 	age = random.randint(15, 80)  # Edad entre 15 y 80
