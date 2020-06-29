@@ -1,6 +1,5 @@
 package com.emotionalmap.job;
 
-import org.bson.BsonArray;
 import org.bson.Document;
 import org.quartz.InterruptableJob;
 import org.quartz.JobDataMap;
@@ -12,11 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Vector;
 
 import com.emotionalmap.entity.Emotion;
 import com.emotionalmap.entity.MatrixQuadrant;
@@ -30,6 +26,7 @@ import com.emotionalmap.service.EmotionsDownloader;
 import com.emotionalmap.service.JobService;
 import com.emotionalmap.service.OSMdownloader;
 import com.emotionalmap.service.SegmentLinker;
+import com.emotionalmap.util.CollectionNameBuilder;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -129,7 +126,7 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 			emotion.setSegment(s.getId());
 			emotionRepository.save(emotion);
 
-			String collectionName = collectionNameBuilder(emotion);
+			String collectionName = CollectionNameBuilder.build(emotion);
 			MongoCollection<Document> collection = database.getCollection(collectionName);
 			updateSegmentForFiltering(emotion, collection);
 		}
@@ -143,68 +140,9 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 		mongoClient.close();
 	}
 
-	private String collectionNameBuilder(Emotion emotion) {
-		String collectionName = "";
-		Calendar calendar = GregorianCalendar.getInstance();
-		calendar.setTime(emotion.getTime1());
-		int hour = calendar.get(Calendar.HOUR_OF_DAY);
-		// Morning from 6:00 to 12:59
-		if (hour >= 6 && hour < 13) {
-			collectionName += "morning";
-		}
-		// Afternoon from 13:00 to 20:59
-		else if (hour >= 13 && hour < 21) {
-			collectionName += "afternoon";
-		}
-		// Night from 21:00 to 5:59
-		else if (hour >= 21 || hour < 6) {
-			collectionName += "night";
-		}
-
-		// Seasons
-		int dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
-		if (dayOfYear >= 81 && dayOfYear <= 173) {
-			collectionName += ".spring";
-		} else if (dayOfYear >= 174 && dayOfYear <= 266) {
-			collectionName += ".summer";
-		} else if (dayOfYear >= 267 && dayOfYear <= 356) {
-			collectionName += ".autumn";
-		} else {
-			collectionName += ".winter";
-		}
-
-		// Gender
-		if (emotion.getGender() == 'M') {
-			collectionName += ".male";
-		} else if (emotion.getGender() == 'F') {
-			collectionName += ".female";
-		} else if (emotion.getGender() == 'O') {
-			collectionName += ".othergender";
-		}
-
-		// Age
-		if (emotion.getAge() < 18) {
-			collectionName += ".child";
-		} else if (emotion.getAge() >= 18 && emotion.getAge() < 65) {
-			collectionName += ".adult";
-		} else {
-			collectionName += ".old";
-		}
-
-		// Type
-		if (emotion.getType() == 'C') {
-			collectionName += ".citizen";
-		} else {
-			collectionName += ".tourist";
-		}
-
-		return collectionName;
-	}
-
 	// Updates the filtering collections for having the queries done faster.
 	private void updateSegmentForFiltering(Emotion e, MongoCollection<Document> collection) {
 		Document myDoc = collection.find(eq("_id", e.getSegment())).first();
-		String field = "emotion" + e.getEmotion();
 		if (myDoc != null) {
 			List<Integer> emotions = (List<Integer>) myDoc.get("emotions");
 			int newValue = emotions.get(e.getEmotion() - 1) + 1;
