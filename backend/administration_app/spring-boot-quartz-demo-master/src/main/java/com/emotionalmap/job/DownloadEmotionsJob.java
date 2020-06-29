@@ -10,6 +10,8 @@ import org.quartz.UnableToInterruptJobException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +35,7 @@ import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Filters.*;
 
 public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJob {
+	private boolean debug = true;
 
 	private volatile boolean toStopFlag = true;
 
@@ -86,9 +89,15 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 		// Here is the job logic
 		OSMdownloader osm = new OSMdownloader(segmentRepository);
 
+		double totalTime, timeToRetrieveEmotions, findQuadrantForEveryEmotion, saveSegments;
+		totalTime = System.nanoTime();
+
+		timeToRetrieveEmotions = System.nanoTime();
 		// Pick up the emotions
 		ArrayList<Emotion> emotions = emotionsDownloader.retrieveEmotions(route);
+		timeToRetrieveEmotions = System.nanoTime() - timeToRetrieveEmotions;
 
+		findQuadrantForEveryEmotion = System.nanoTime();
 		// Find which quadrant belongs each emotion
 		for (Emotion emotion : emotions) {
 			ArrayList<MatrixQuadrant> quadrants = MatrixQuadrant.getMatrixQuadrantList(emotion.getPoint1(),
@@ -116,7 +125,9 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 				}
 			}
 		}
+		findQuadrantForEveryEmotion = System.nanoTime() - findQuadrantForEveryEmotion;
 
+		saveSegments = System.nanoTime();
 		// Save each emotion with its closest segment
 		SegmentLinker segmentLinker = new SegmentLinker(segmentRepository);
 		MongoClient mongoClient = new MongoClient("localhost", 27017);
@@ -130,6 +141,7 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 			MongoCollection<Document> collection = database.getCollection(collectionName);
 			updateSegmentForFiltering(emotion, collection);
 		}
+		saveSegments = System.nanoTime() - saveSegments;
 
 		// Update lastFetch of the route
 		if (emotions.size() > 0) {
@@ -138,6 +150,29 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 		}
 
 		mongoClient.close();
+		totalTime = System.nanoTime() - totalTime;
+
+		System.out.println("--------------------------");
+		System.out.println("Total time in millis: " + totalTime / 1000000);
+		System.out.println("Retrieve emotions time in millis: " + timeToRetrieveEmotions / 1000000);
+		System.out.println("Find quadrant for every emotion time in millis: " + findQuadrantForEveryEmotion / 1000000);
+		System.out.println("Time to link emotion-segment and save the segments in millis: " + saveSegments / 1000000);
+		System.out.println("--------------------------");
+
+		try {
+			FileWriter myFile = new FileWriter("mediciones-" + route.getName() + ".txt");
+			myFile.write("Tiempos para 100000 emociones" + '\n');
+			myFile.write("-----------------------------" + '\n');
+			myFile.write("Total time in millis: " + totalTime / 1000000 + '\n');
+			myFile.write("Retrieve emotions time in millis: " + timeToRetrieveEmotions / 1000000 + '\n');
+			myFile.write(
+					"Find quadrant for every emotion time in millis: " + findQuadrantForEveryEmotion / 1000000 + '\n');
+			myFile.write("Time to link emotion-segment and save the segments in millis: " + saveSegments / 1000000 + '\n');
+			myFile.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	// Updates the filtering collections for having the queries done faster.
