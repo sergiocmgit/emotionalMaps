@@ -1,6 +1,7 @@
-Tiempos para 100000 emociones
+Tiempos para 200000 emociones
 -----------------------------
-Total time in millis: 7324854.0903
-Retrieve emotions time in millis: 5995.4344
-Find quadrant for every emotion time in millis: 80383.8966
-Time to link emotion-segment and save the segments in millis: 7238396.4063
+Total time in millis: 7272773.5431
+Retrieve emotions in millis: 31899.1897
+Find quadrants to download in millis: 214323.613
+Link emotions and segments in millis: 6918793.9943
+Update filters in millis: 107557.7348

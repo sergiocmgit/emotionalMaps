@@ -89,7 +89,8 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 		// Here is the job logic
 		OSMdownloader osm = new OSMdownloader(segmentRepository);
 
-		double totalTime, timeToRetrieveEmotions, findQuadrantForEveryEmotion, saveSegments;
+		double totalTime, timeToRetrieveEmotions, timeToFindQuadrantsToDownload, timeToLinkEmotionAndSegment,
+				timeToUpdateFilters, auxTime;
 		totalTime = System.nanoTime();
 
 		timeToRetrieveEmotions = System.nanoTime();
@@ -97,7 +98,7 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 		ArrayList<Emotion> emotions = emotionsDownloader.retrieveEmotions(route);
 		timeToRetrieveEmotions = System.nanoTime() - timeToRetrieveEmotions;
 
-		findQuadrantForEveryEmotion = System.nanoTime();
+		timeToFindQuadrantsToDownload = System.nanoTime();
 		// Find which quadrant belongs each emotion
 		for (Emotion emotion : emotions) {
 			ArrayList<MatrixQuadrant> quadrants = MatrixQuadrant.getMatrixQuadrantList(emotion.getPoint1(),
@@ -125,23 +126,29 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 				}
 			}
 		}
-		findQuadrantForEveryEmotion = System.nanoTime() - findQuadrantForEveryEmotion;
+		timeToFindQuadrantsToDownload = System.nanoTime() - timeToFindQuadrantsToDownload;
 
-		saveSegments = System.nanoTime();
 		// Save each emotion with its closest segment
 		SegmentLinker segmentLinker = new SegmentLinker(segmentRepository);
 		MongoClient mongoClient = new MongoClient("localhost", 27017);
 		MongoDatabase database = mongoClient.getDatabase("emotionsMap");
+		timeToLinkEmotionAndSegment = 0;
+		timeToUpdateFilters = 0;
 		for (Emotion emotion : emotions) {
+			auxTime = System.nanoTime();
 			Segment s = segmentLinker.segmentByEmotion(emotion.getPoint1(), emotion.getPoint2());
 			emotion.setSegment(s.getId());
 			emotionRepository.save(emotion);
+			auxTime = System.nanoTime() - auxTime;
+			timeToLinkEmotionAndSegment += auxTime;
 
+			auxTime = System.nanoTime();
 			String collectionName = CollectionNameBuilder.build(emotion);
 			MongoCollection<Document> collection = database.getCollection(collectionName);
 			updateSegmentForFiltering(emotion, collection);
+			auxTime = System.nanoTime() - auxTime;
+			timeToUpdateFilters += auxTime;
 		}
-		saveSegments = System.nanoTime() - saveSegments;
 
 		// Update lastFetch of the route
 		if (emotions.size() > 0) {
@@ -155,19 +162,21 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 		System.out.println("--------------------------");
 		System.out.println("Total time in millis: " + totalTime / 1000000);
 		System.out.println("Retrieve emotions time in millis: " + timeToRetrieveEmotions / 1000000);
-		System.out.println("Find quadrant for every emotion time in millis: " + findQuadrantForEveryEmotion / 1000000);
-		System.out.println("Time to link emotion-segment and save the segments in millis: " + saveSegments / 1000000);
+		System.out
+				.println("Find quadrant for every emotion time in millis: " + timeToFindQuadrantsToDownload / 1000000);
+		System.out.println("Time to link emotions and segments in millis: " + timeToLinkEmotionAndSegment / 1000000);
+		System.out.println("Time to update filters in millis: " + timeToUpdateFilters / 1000000);
 		System.out.println("--------------------------");
 
 		try {
 			FileWriter myFile = new FileWriter("mediciones-" + route.getName() + ".txt");
-			myFile.write("Tiempos para 100000 emociones" + '\n');
+			myFile.write("Tiempos para " + emotions.size() + " emociones" + '\n');
 			myFile.write("-----------------------------" + '\n');
 			myFile.write("Total time in millis: " + totalTime / 1000000 + '\n');
-			myFile.write("Retrieve emotions time in millis: " + timeToRetrieveEmotions / 1000000 + '\n');
-			myFile.write(
-					"Find quadrant for every emotion time in millis: " + findQuadrantForEveryEmotion / 1000000 + '\n');
-			myFile.write("Time to link emotion-segment and save the segments in millis: " + saveSegments / 1000000 + '\n');
+			myFile.write("Retrieve emotions in millis: " + timeToRetrieveEmotions / 1000000 + '\n');
+			myFile.write("Find quadrants to download in millis: " + timeToFindQuadrantsToDownload / 1000000 + '\n');
+			myFile.write("Link emotions and segments in millis: " + timeToLinkEmotionAndSegment / 1000000 + '\n');
+			myFile.write("Update filters in millis: " + timeToUpdateFilters / 1000000 + '\n');
 			myFile.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
