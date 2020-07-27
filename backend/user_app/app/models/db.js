@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-let dbURI = 'mongodb://localhost/emotionsMap';
+let dbURI = 'mongodb://emotions-mongodb:27018/emotions-map';
 if (process.env.NODE_ENV === 'production') {
 	dbURI = process.env.MONGODB_URI;
 }
@@ -48,5 +48,5 @@ require('./segment.model');
 
 module.exports = {
 	'secret':'meansecure',
-	'database': 'mongodb://localhost/mean-secure'
+	'database': 'mongodb://emotions-mongodb/mean-secure'
   };
