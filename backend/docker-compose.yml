@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+    emotions-postgres:
+        image: postgres:latest
+        container_name: emotions-postgres
+        volumes:
+          - postgres-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: adminsergio
+          POSTGRES_DB: jobsscheduled
+        ports:
+            - "5433:5432"
+    emotions-mongodb:
+        image: mongo:latest
+        container_name: emotions-mongodb
+        restart: always
+        volumes:
+            - mongodb-data:/data/db
+        ports:
+            - "27018:27017"
+    emotions-administration-app:
+        build: ./administration_app/central_system
+        container_name: emotions-administration-app
+        restart: always
+        ports:
+            - "7082:7080"
+        depends_on:
+            - emotions-postgres
+            - emotions-mongodb
+volumes:
+    postgres-data:
+    mongodb-data:
+        
+    
