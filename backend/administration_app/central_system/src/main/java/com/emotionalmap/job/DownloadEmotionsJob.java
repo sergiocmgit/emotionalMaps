@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.emotionalmap.entity.Emotion;
 import com.emotionalmap.entity.MatrixQuadrant;
@@ -128,9 +129,18 @@ public class DownloadEmotionsJob extends QuartzJobBean implements InterruptableJ
 		}
 		timeToFindQuadrantsToDownload = System.nanoTime() - timeToFindQuadrantsToDownload;
 
+		
 		// Save each emotion with its closest segment
+		
+
 		SegmentLinker segmentLinker = new SegmentLinker(segmentRepository);
-		MongoClient mongoClient = new MongoClient("localhost", 27017);
+
+		//Create connection String
+		//Get Env variables
+		//Map<String, String> env = System.getenv();
+		//String connString = String.format("mongodb://%s:%s@%s:%s", env.get("MONGO_USER"), env.get("MONGO_PASSWORD"), env.get("MONGO_HOST"), env.get("MONGO_PORT"));
+		String connString = "mongodb://emotionsmaps:emmOA6kn9cb5E69@localhost:64015/emotionsMap";
+		MongoClient mongoClient = new MongoClient(connString);
 		MongoDatabase database = mongoClient.getDatabase("emotionsMap");
 		timeToLinkEmotionAndSegment = 0;
 		timeToUpdateFilters = 0;
