@@ -1,13 +1,12 @@
 version: '3.8'
 services:
-    emotions-postgres:
+    postgres:
         build: ./Postgres
-        container_name: emotions-postgres
         restart: always
         volumes:
           - postgres-data:/var/lib/postgresql/data # persist data even if container shuts down
         ports:
-          - "5432:5432"
+          - "5433:5432"
         environment:  
           POSTGRES_USER_FILE: /run/secrets/postgres_root_username
           POSTGRES_PASSWORD_FILE: /run/secrets/postgres_root_password
@@ -21,9 +20,8 @@ services:
           - postgres_username
           - postgres_root_password
           - postgres_root_username
-    emotions-mongodb:
+    mongodb:
         build: ./Mongo
-        container_name: emotions-mongodb
         restart: always
         volumes:
           - mongodb-data:/data/db # persist data even if container shuts down
@@ -43,9 +41,8 @@ services:
         - mongodb_root_password
         - mongodb_username
         - mongodb_password
-    emotions-administration-app:
+    administration-app:
         build: backend/administration_app/central_system
-        container_name: emotions-administration-app
         restart: always
         networks:
           - backend
@@ -53,8 +50,8 @@ services:
         ports:
           - "7082:7080"
         depends_on:
-          - emotions-postgres
-          - emotions-mongodb
+          - postgres
+          - mongodb
 volumes:
     postgres-data:
     mongodb-data:
@@ -73,13 +70,13 @@ secrets:
     mongodb_password:
         file: Mongo/secrets/mongodb_password
     postgres_root_username:
-        file: Postgres/secrets/postgres_root_username
+        file: Postgres/Secrets/postgres_root_username
     postgres_root_password:
-        file: Postgres/secrets/postgres_root_password
+        file: Postgres/Secrets/postgres_root_password
     postgres_username:
-        file: Postgres/secrets/postgres_username
+        file: Postgres/Secrets/postgres_username
     postgres_password:
-        file: Postgres/secrets/postgres_password
+        file: Postgres/Secrets/postgres_password
     
         
     
